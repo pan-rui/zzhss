@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Sms">
+    <sql id="sms_K">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">userId,</if>
+            <if test="smsContent != null">smsContent,</if>
+            <if test="createTime != null">createTime,</if>
+            <if test="cellPhone != null">cellPhone,</if>
+            <if test="smsType != null">smsType,</if>
+            <if test="sendStatus != null">sendStatus,</if>
+        </trim>
+    </sql>
+    <sql id="sms_V">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="smsContent != null">#{smsContent},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="cellPhone != null">#{cellPhone},</if>
+            <if test="smsType != null">#{smsType},</if>
+            <if test="sendStatus != null">#{sendStatus},</if>
+        </trim>
+    </sql>
+    <sql id="sms_U">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">userId=#{userId},</if>
+            <if test="smsContent != null">smsContent=#{smsContent},</if>
+            <if test="createTime != null">createTime=#{createTime},</if>
+            <if test="cellPhone != null">cellPhone=#{cellPhone},</if>
+            <if test="smsType != null">smsType=#{smsType},</if>
+            <if test="sendStatus != null">sendStatus=#{sendStatus},</if>
+        </trim>
+    </sql>
+    <sql id="sms_C">
+        <trim prefix="WHERE" prefixOverrides="or | and">
+            <if test="id != null">and id=#{id}</if>
+            <if test="userId != null">and userId=#{userId}</if>
+            <if test="smsContent != null">and smsContent=#{smsContent}</if>
+            <if test="createTime != null">and createTime=#{createTime}</if>
+            <if test="cellPhone != null">and cellPhone=#{cellPhone}</if>
+            <if test="smsType != null">and smsType=#{smsType}</if>
+            <if test="sendStatus != null">and sendStatus=#{sendStatus}</if>
+        </trim>
+    </sql>
+
+    <insert id="save" parameterType="com.yg.pojo.Sms" keyProperty="id"
+            useGeneratedKeys="true">insert into
+        t_sms (
+        <include refid="sms_K"/>
+        ) values(
+        <include refid="sms_V"/>
+        )
+    </insert>
+
+    <select id="queryById" parameterType="long" resultType="com.yg.pojo.Sms">
+        select * from t_sms where id=#{id}
+    </select>
+
+    <select id="queryAll" resultType="com.yg.pojo.Sms">
+        select * from t_sms
+    </select>
+
+    <select id="queryByPO" parameterType="com.yg.pojo.Sms" resultType="com.yg.pojo.Sms">
+        select * from t_sms
+        <include refid="sms_C"></include>
+    </select>
+    <select id="queryByPros" parameterType="map" resultType="com.yg.pojo.Sms">
+        select * FROM t_sms
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">${key}=#{item}</if>
+            </foreach>
+        </trim>
+    </select>
+    <select id="queryForPage" parameterType="com.yg.core.Page" resultType="com.yg.pojo.Sms">
+        select * from t_sms
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">
+                    <choose>
+                        <when test='key !="id"'>
+                            ${key} LIKE '%${item}%'
+                        </when>
+                        <otherwise>
+                            ${key}='${item}'
+                        </otherwise>
+                    </choose>
+                </if>
+            </foreach>
+        </trim>
+        <trim prefix="order by" prefixOverrides=",">
+            <foreach collection="orderMap" item="item" index="key" separator=",">
+                <if test="null != item">${key} ${item}</if>
+            </foreach>
+        </trim>
+    </select>
+
+    <update id="updateById" parameterType="com.yg.pojo.Sms">
+        update t_sms
+        <include refid="sms_U"></include>
+        where id=#{id}
+    </update>
+    <delete id="deleteById" parameterType="long">
+        delete from t_sms where id=#{id}
+    </delete>
+    <delete id="deleteByPO" parameterType="com.yg.pojo.Sms">
+        delete from t_sms
+        <include refid="sms_C"></include>
+    </delete>
+</mapper>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OrderItem">
+    <sql id="order_item_K">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orderId != null">orderId,</if>
+            <if test="prodId != null">prodId,</if>
+            <if test="prodName != null">prodName,</if>
+            <if test="price != null">price,</if>
+            <if test="priceY != null">priceY,</if>
+            <if test="count != null">count,</if>
+            <if test="imei != null">imei,</if>
+            <if test="ctime != null">ctime,</if>
+        </trim>
+    </sql>
+    <sql id="order_item_V">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orderId != null">#{orderId},</if>
+            <if test="prodId != null">#{prodId},</if>
+            <if test="prodName != null">#{prodName},</if>
+            <if test="price != null">#{price},</if>
+            <if test="priceY != null">#{priceY},</if>
+            <if test="count != null">#{count},</if>
+            <if test="imei != null">#{imei},</if>
+            <if test="ctime != null">#{ctime},</if>
+        </trim>
+    </sql>
+    <sql id="order_item_U">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null">orderId=#{orderId},</if>
+            <if test="prodId != null">prodId=#{prodId},</if>
+            <if test="prodName != null">prodName=#{prodName},</if>
+            <if test="price != null">price=#{price},</if>
+            <if test="priceY != null">priceY=#{priceY},</if>
+            <if test="count != null">count=#{count},</if>
+            <if test="imei != null">imei=#{imei},</if>
+            <if test="ctime != null">ctime=#{ctime},</if>
+        </trim>
+    </sql>
+    <sql id="order_item_C">
+        <trim prefix="WHERE" prefixOverrides="or | and">
+            <if test="id != null">and id=#{id}</if>
+            <if test="orderId != null">and orderId=#{orderId}</if>
+            <if test="prodId != null">and prodId=#{prodId}</if>
+            <if test="prodName != null">and prodName=#{prodName}</if>
+            <if test="price != null">and price=#{price}</if>
+            <if test="priceY != null">and priceY=#{priceY}</if>
+            <if test="count != null">and count=#{count}</if>
+            <if test="imei != null">and imei=#{imei}</if>
+            <if test="ctime != null">and ctime=#{ctime}</if>
+        </trim>
+    </sql>
+
+    <insert id="save" parameterType="com.yg.pojo.OrderItem" keyProperty="id"
+            useGeneratedKeys="true">insert into
+        t_order_item (
+        <include refid="order_item_K"/>
+        ) values(
+        <include refid="order_item_V"/>
+        )
+    </insert>
+
+    <select id="queryById" parameterType="long" resultType="com.yg.pojo.OrderItem">
+        select * from t_order_item where id=#{id}
+    </select>
+
+    <select id="queryAll" resultType="com.yg.pojo.OrderItem">
+        select * from t_order_item
+    </select>
+
+    <select id="queryByPO" parameterType="com.yg.pojo.OrderItem" resultType="com.yg.pojo.OrderItem">
+        select * from t_order_item
+        <include refid="order_item_C"></include>
+    </select>
+    <select id="queryByPros" parameterType="map" resultType="com.yg.pojo.OrderItem">
+        select * FROM t_order_item
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">${key}=#{item}</if>
+            </foreach>
+        </trim>
+    </select>
+
+    <select id="queryForPage" parameterType="map" resultType="com.yg.pojo.OrderItem">
+        select * FROM t_order_item
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">
+                    <choose>
+                        <when test='key !="id"'>
+                            ${key} LIKE '%${item}%'
+                        </when>
+                        <otherwise>
+                            ${key}='${item}'
+                        </otherwise>
+                    </choose>
+                </if>
+            </foreach>
+        </trim>
+        <if test="orderMap != null">
+            <trim prefix="order by" prefixOverrides=",">
+                <foreach collection="orderMap" item="item" index="key" separator=",">
+                    <if test="null != item">${key} ${item}</if>
+                </foreach>
+            </trim>
+        </if>
+    </select>
+
+    <update id="updateById" parameterType="com.yg.pojo.OrderItem">
+        update t_order_item
+        <include refid="order_item_U"></include>
+        where id=#{id}
+    </update>
+    <delete id="deleteById" parameterType="long">
+        delete from t_order_item where id=#{id}
+    </delete>
+    <delete id="deleteByPO" parameterType="com.yg.pojo.OrderItem">
+        delete from t_order_item
+        <include refid="order_item_C"></include>
+    </delete>
+</mapper>

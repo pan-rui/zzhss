@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Admin">
+    <sql id="admin_K">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="adminName != null">adminName,</if>
+            <if test="pwd != null">pwd,</if>
+            <if test="createTime != null">createTime,</if>
+            <if test="isEnable != null">isEnable,</if>
+        </trim>
+    </sql>
+    <sql id="admin_V">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="adminName != null">#{adminName},</if>
+            <if test="pwd != null">#{pwd},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="isEnable != null">#{isEnable},</if>
+        </trim>
+    </sql>
+    <sql id="admin_U">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="adminName != null">adminName=#{adminName},</if>
+            <if test="pwd != null">pwd=#{pwd},</if>
+            <if test="createTime != null">createTime=#{createTime},</if>
+            <if test="isEnable != null">isEnable=#{isEnable},</if>
+        </trim>
+    </sql>
+    <sql id="admin_C">
+        <trim prefix="WHERE" prefixOverrides="or | and">
+            <if test="id != null">and id=#{id}</if>
+            <if test="adminName != null">and adminName=#{adminName}</if>
+            <if test="pwd != null">and pwd=#{pwd}</if>
+            <if test="createTime != null">and createTime=#{createTime}</if>
+            <if test="isEnable != null">and isEnable=#{isEnable}</if>
+        </trim>
+    </sql>
+
+    <insert id="save" parameterType="com.yg.pojo.Admin" keyProperty="id" useGeneratedKeys="true">
+        insert into
+        t_admin (
+        <include refid="admin_K"/>
+        ) values(
+        <include refid="admin_V"/>
+        )
+    </insert>
+
+    <select id="queryById" parameterType="long" resultType="com.yg.pojo.Admin">
+        select * from t_admin where id=#{id}
+    </select>
+
+    <select id="queryAll" resultType="com.yg.pojo.Admin">
+        select * from t_admin
+    </select>
+
+    <select id="queryByPO" parameterType="com.yg.pojo.Admin" resultType="com.yg.pojo.Admin">
+        select * from t_admin
+        <include refid="admin_C"></include>
+    </select>
+    <select id="queryByPros" parameterType="map" resultType="com.yg.pojo.Admin">
+        select * FROM t_admin
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">${key}=#{item}</if>
+            </foreach>
+        </trim>
+    </select>
+    <select id="queryForPage" parameterType="com.yg.core.Page" resultType="com.yg.pojo.Admin">
+        select * from t_admin
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">
+                    <choose>
+                        <when test='key !="id"'>
+                            ${key} LIKE '%${item}%'
+                        </when>
+                        <otherwise>
+                            ${key}='${item}'
+                        </otherwise>
+                    </choose>
+                </if>
+            </foreach>
+        </trim>
+        <trim prefix="order by" prefixOverrides=",">
+            <foreach collection="orderMap" item="item" index="key" separator=",">
+                <if test="null != item">${key} ${item}</if>
+            </foreach>
+        </trim>
+    </select>
+
+    <update id="updateById" parameterType="com.yg.pojo.Admin">
+        update t_admin
+        <include refid="admin_U"></include>
+        where id=#{id}
+    </update>
+    <delete id="deleteById" parameterType="long">
+        delete from t_admin where id=#{id}
+    </delete>
+    <delete id="deleteByPO" parameterType="com.yg.pojo.Admin">
+        delete from t_admin
+        <include refid="admin_C"></include>
+    </delete>
+    <select id="columnInfo" parameterType="map" resultType="java.util.HashMap">
+        select column_name ,data_type,column_type,column_comment,column_default,is_nullable,CHARACTER_MAXIMUM_LENGTH
+        maxLength,ORDINAL_POSITION position FROM INFORMATION_SCHEMA.COLUMNS
+        <trim prefix="WHERE" prefixOverrides="or | and">
+            table_schema='yg'
+            <if test="tableName != null">and TABLE_NAME =#{tableName}</if>
+            <if test="columnName != null">and COLUMN_NAME =#{columnName}</if>
+        </trim>
+    </select>
+</mapper>

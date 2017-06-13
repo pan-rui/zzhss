@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="HelpType">
+    <sql id="help_type_K">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="helpTypeName != null">helpTypeName,</if>
+            <if test="createTime != null">createTime,</if>
+            <if test="orderNo != null">orderNo,</if>
+            <if test="helpTypeId != null">helpTypeId,</if>
+        </trim>
+    </sql>
+    <sql id="help_type_V">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="helpTypeName != null">#{helpTypeName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="helpTypeId != null">#{helpTypeId},</if>
+        </trim>
+    </sql>
+    <sql id="help_type_U">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="helpTypeName != null">helpTypeName=#{helpTypeName},</if>
+            <if test="createTime != null">createTime=#{createTime},</if>
+            <if test="orderNo != null">orderNo=#{orderNo},</if>
+            <if test="helpTypeId != null">helpTypeId=#{helpTypeId},</if>
+        </trim>
+    </sql>
+    <sql id="help_type_C">
+        <trim prefix="WHERE" prefixOverrides="or | and">
+            <if test="id != null">and id=#{id}</if>
+            <if test="helpTypeName != null">and helpTypeName=#{helpTypeName}</if>
+            <if test="createTime != null">and createTime=#{createTime}</if>
+            <if test="orderNo != null">and orderNo=#{orderNo}</if>
+            <if test="helpTypeId != null">and helpTypeId=#{helpTypeId}</if>
+        </trim>
+    </sql>
+
+    <insert id="save" parameterType="com.yg.pojo.HelpType" keyProperty="id"
+            useGeneratedKeys="true">insert into
+        t_help_type (
+        <include refid="help_type_K"/>
+        ) values(
+        <include refid="help_type_V"/>
+        )
+    </insert>
+
+    <select id="queryById" parameterType="long" resultType="com.yg.pojo.HelpType">
+        select * from t_help_type where id=#{id}
+    </select>
+
+    <select id="queryAll" resultType="com.yg.pojo.HelpType">
+        select * from t_help_type
+    </select>
+
+    <select id="queryByPO" parameterType="com.yg.pojo.HelpType" resultType="com.yg.pojo.HelpType">
+        select * from t_help_type
+        <include refid="help_type_C"></include>
+    </select>
+    <select id="queryByPros" parameterType="map" resultType="com.yg.pojo.HelpType">
+        select * FROM t_help_type
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">${key}=#{item}</if>
+            </foreach>
+        </trim>
+    </select>
+    <select id="queryForPage" parameterType="com.yg.core.Page" resultType="com.yg.pojo.HelpType">
+        select * from t_help_type
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">
+                    <choose>
+                        <when test='key !="id"'>
+                            ${key} LIKE '%${item}%'
+                        </when>
+                        <otherwise>
+                            ${key}='${item}'
+                        </otherwise>
+                    </choose>
+                </if>
+            </foreach>
+        </trim>
+        <trim prefix="order by" prefixOverrides=",">
+            <foreach collection="orderMap" item="item" index="key" separator=",">
+                <if test="null != item">${key} ${item}</if>
+            </foreach>
+        </trim>
+    </select>
+
+    <update id="updateById" parameterType="com.yg.pojo.HelpType">
+        update t_help_type
+        <include refid="help_type_U"></include>
+        where id=#{id}
+    </update>
+    <delete id="deleteById" parameterType="long">
+        delete from t_help_type where id=#{id}
+    </delete>
+    <delete id="deleteByPO" parameterType="com.yg.pojo.HelpType">
+        delete from t_help_type
+        <include refid="help_type_C"></include>
+    </delete>
+</mapper>

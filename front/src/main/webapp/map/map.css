@@ -1,0 +1,56 @@
+/*等待窗口*/
+#loading {
+    display: none;
+    position: absolute;
+    z-index: 1001;
+    top: 50%;
+    left: 43%;
+    margin-left: 50px;
+    width: 150px;
+    height: 25px;
+    line-height: 20px;
+    color: #fff;
+    background: #d0111b;
+    font-size: 14px;
+    border: solid 1px #617f9a;
+}
+/*轨迹回放弹出窗口*/
+#set_time {
+    position: absolute;
+    display: none;
+    z-index: 1001;
+    top: 100px;
+    left: 30%;
+    margin-left: 50px;
+    width: 40%;
+    height: 40px;
+    line-height: 20px;
+    color: #fff;
+    background: #d0111b;
+    font-size: 14px;
+    border: solid 1px #617f9a;
+    filter:alpha(opacity=80);
+    opacity: 0.8;
+}
+.map_info { width:220px; padding:0px 20px 15px 30px;border-bottom:2px #aa0103 solid; background:#fff; font-size:12px; line-height:18px; color:#a4aeb9;}
+.map_info .tit{ font-size:18px; color:#333; line-height:30px; font-weight:bold; height:30px;}
+.map_info .tit .clo{ float:right; color:#d0111b; line-height:20px; font-size:20px; }
+.map_info .tit .clo:hover{ color:#5d9cec; }
+.map_info .con{ margin-bottom:5px; }
+.map_info .foot{ position:relative; color:#5d9cec; }
+.map_info .foot a{ color:#5d9cec; }
+.map_info .foot a:hover{ color:#d0111b; }
+.map_info .foot .more{ cursor:pointer; }
+.map_info .foot .map_info_nav{ display:none; position:absolute; right:0px; top:22px; width:118px; border:1px #efefef solid; background:#fff; border-radius:5px; border-bottom:3px #e3e4e8 solid; padding:10px 0px; z-index:999;}
+.map_info .foot .map_info_nav a{ display:block; padding-left:20px; line-height:20px;}
+.map_info .fb{ position:relative; display:none; }
+
+.time_box1{
+    background:url(/images/input_date.png) right center no-repeat #f0f2f5;
+    width:170px;
+    margin-top: 6px;
+    padding:0px 5px 0px 5px;
+    margin-right:10px;
+    border:2px #e4e6e9 solid;
+    border-radius:3px;
+}

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<taglib xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+        version="2.1">
+
+    <tlib-version>1.1</tlib-version>
+    <short-name>y</short-name>
+    <uri>http://www.yg.com/y</uri>
+
+    <!-- Invoke 'Generate' action to add tags or functions -->
+    <tag>
+        <name>toHtml</name>
+        <tag-class>com.yg.tag.ToHtml</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description>显示成html样式的文本</description>
+            <name>text</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>select</name>
+        <tag-class>com.yg.tag.AutoSelect</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description>select标签的ID</description>
+            <name>id</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>select表单的name属性</description>
+            <name>name</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>select标签的class</description>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>select标签的数据</description>
+            <name>data</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.util.List</type>
+        </attribute>
+        <attribute>
+            <description>select标签的默认值</description>
+            <name>defVal</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>select标签的默认值</description>
+            <name>range</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+    <function>
+        <!--EL页面调用名字-->
+        <name>toMap</name>
+        <!--指定标签的处理类，指定了标签由哪个Java类来处理。-->
+        <function-class>com.alibaba.fastjson.JSON</function-class>
+        <!--指定EL页面调用名字中实际调用的方法.指定处理类的实际方法.参数和回调函数要写完整路径-->
+        <function-signature>java.lang.Object parse(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <!--EL页面调用名字-->
+        <name>toLinkedMap</name>
+        <!--指定标签的处理类，指定了标签由哪个Java类来处理。-->
+        <function-class>com.yg.tag.ToHtml</function-class>
+        <!--指定EL页面调用名字中实际调用的方法.指定处理类的实际方法.参数和回调函数要写完整路径-->
+        <function-signature>java.util.LinkedHashMap toLinkedMap(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <name>toArray</name>
+        <function-class>com.alibaba.fastjson.JSON</function-class>
+        <function-signature>com.alibaba.fastjson.JSONArray parseArray(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <name>showJSON</name>
+        <function-class>com.yg.tag.ToHtml</function-class>
+        <function-signature>java.lang.String showJSON(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <name>toArrayStr</name>
+        <function-class>com.alibaba.fastjson.JSON</function-class>
+        <function-signature>java.lang.String toJSONString(java.lang.Object)</function-signature>
+    </function>
+    <function>
+        <name>concat</name>
+        <function-class>com.yg.tag.ToHtml</function-class>
+        <function-signature>java.lang.String concat(java.lang.String,java.lang.String)</function-signature>
+    </function>
+    <function>
+        <name>getComment</name>
+        <function-class>com.yg.tag.ToHtml</function-class>
+        <function-signature>java.lang.Object getComment(java.lang.String,java.lang.String)</function-signature>
+    </function>
+<!--    <function>
+        <name>parseInteger</name>
+        <function-class>com.yg.tag.ToHtml</function-class>
+        <function-signature>java.lang.Integer parseIneger(java.lang.String)</function-signature>
+    </function>-->
+</taglib>

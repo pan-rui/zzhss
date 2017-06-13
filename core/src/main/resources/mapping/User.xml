@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="User">
+    <sql id="user_K">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userName != null">userName,</if>
+            <if test="email != null">email,</if>
+            <if test="pwd != null">pwd,</if>
+            <if test="cellPhone != null">cellPhone,</if>
+            <if test="createTime != null">createTime,</if>
+            <if test="isEnable != null">isEnable,</if>
+            <if test="regIp != null">regIp,</if>
+            <if test="lastLoginIp != null">lastLoginIp,</if>
+            <if test="lastLoginTime != null">lastLoginTime,</if>
+            <if test="source != null">source,</if>
+            <if test="type != null">type,</if>
+        </trim>
+    </sql>
+    <sql id="user_V">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="email != null">#{email},</if>
+            <if test="pwd != null">#{pwd},</if>
+            <if test="cellPhone != null">#{cellPhone},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="isEnable != null">#{isEnable},</if>
+            <if test="regIp != null">#{regIp},</if>
+            <if test="lastLoginIp != null">#{lastLoginIp},</if>
+            <if test="lastLoginTime != null">#{lastLoginTime},</if>
+            <if test="source != null">#{source},</if>
+            <if test="type != null">#{type},</if>
+        </trim>
+    </sql>
+    <sql id="user_U">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userName != null">userName=#{userName},</if>
+            <if test="email != null">email=#{email},</if>
+            <if test="pwd != null">pwd=#{pwd},</if>
+            <if test="cellPhone != null">cellPhone=#{cellPhone},</if>
+            <if test="createTime != null">createTime=#{createTime},</if>
+            <if test="isEnable != null">isEnable=#{isEnable},</if>
+            <if test="regIp != null">regIp=#{regIp},</if>
+            <if test="lastLoginIp != null">lastLoginIp=#{lastLoginIp},</if>
+            <if test="lastLoginTime != null">lastLoginTime=#{lastLoginTime},</if>
+            <if test="source != null">source=#{source},</if>
+            <if test="type != null">type=#{type},</if>
+        </trim>
+    </sql>
+    <sql id="user_C">
+        <trim prefix="WHERE" prefixOverrides="or | and">
+            <if test="id != null">and id=#{id}</if>
+            <if test="userName != null">and userName=#{userName}</if>
+            <if test="email != null">and email=#{email}</if>
+            <if test="pwd != null">and pwd=#{pwd}</if>
+            <if test="cellPhone != null">and cellPhone=#{cellPhone}</if>
+            <if test="createTime != null">and createTime=#{createTime}</if>
+            <if test="isEnable != null">and isEnable=#{isEnable}</if>
+            <if test="regIp != null">and regIp=#{regIp}</if>
+            <if test="lastLoginIp != null">and lastLoginIp=#{lastLoginIp}</if>
+            <if test="lastLoginTime != null">and lastLoginTime=#{lastLoginTime}</if>
+            <if test="source != null">and source=#{source}</if>
+            <if test="type != null">and type=#{type},</if>
+        </trim>
+    </sql>
+
+    <insert id="save" parameterType="com.yg.pojo.User" keyProperty="id"
+            useGeneratedKeys="true">insert into
+        t_user (
+        <include refid="user_K"/>
+        ) values(
+        <include refid="user_V"/>
+        )
+    </insert>
+
+    <select id="queryById" parameterType="long" resultType="com.yg.pojo.User">
+        select * from t_user where id=#{id}
+    </select>
+
+    <select id="queryAll" resultType="com.yg.pojo.User">
+        select * from t_user
+    </select>
+
+    <select id="queryByPO" parameterType="com.yg.pojo.User" resultType="com.yg.pojo.User">
+        select * from t_user
+        <include refid="user_C"></include>
+    </select>
+    <select id="queryByPros" parameterType="map" resultType="com.yg.pojo.User">
+        select * FROM t_user
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">${key}=#{item}</if>
+            </foreach>
+        </trim>
+    </select>
+    <select id="queryForPage" parameterType="com.yg.core.Page" resultType="com.yg.pojo.User">
+        select * from t_user
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">
+                    <choose>
+                        <when test='key !="id"'>
+                            ${key} LIKE '%${item}%'
+                        </when>
+                        <otherwise>
+                            ${key}='${item}'
+                        </otherwise>
+                    </choose>
+                </if>
+            </foreach>
+        </trim>
+        <trim prefix="order by" prefixOverrides=",">
+            <foreach collection="orderMap" item="item" index="key" separator=",">
+                <if test="null != item">${key} ${item}</if>
+            </foreach>
+        </trim>
+    </select>
+
+    <update id="updateById" parameterType="com.yg.pojo.User">
+        update t_user
+        <include refid="user_U"></include>
+        where id=#{id}
+    </update>
+    <delete id="deleteById" parameterType="long">
+        delete from t_user where id=#{id}
+    </delete>
+    <delete id="deleteByPO" parameterType="com.yg.pojo.User">
+        delete from t_user
+        <include refid="user_C"></include>
+    </delete>
+    <select id="queryReferrer" parameterType="long" resultType="com.yg.pojo.User">
+        select * FROM t_user WHERE type &lt;=1 AND id=#{id}
+    </select>
+    <select id="loginValidate" parameterType="string" resultType="com.yg.pojo.User">
+        select * from t_user WHERE userName=#{nameOrPhone} or cellPhone=#{nameOrPhone}
+    </select>
+</mapper>

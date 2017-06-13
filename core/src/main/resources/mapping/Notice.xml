@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Notice">
+    <sql id="notice_K">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="noticeTitle != null">noticeTitle,</if>
+            <if test="createTime != null">createTime,</if>
+            <if test="noticeContent != null">noticeContent,</if>
+            <if test="adminId != null">adminId,</if>
+            <if test="orderNo != null">orderNo,</if>
+            <if test="isDelete != null">isDelete,</if>
+        </trim>
+    </sql>
+    <sql id="notice_V">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="noticeTitle != null">#{noticeTitle},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="noticeContent != null">#{noticeContent},</if>
+            <if test="adminId != null">#{adminId},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+        </trim>
+    </sql>
+    <sql id="notice_U">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="noticeTitle != null">noticeTitle=#{noticeTitle},</if>
+            <if test="createTime != null">createTime=#{createTime},</if>
+            <if test="noticeContent != null">noticeContent=#{noticeContent},</if>
+            <if test="adminId != null">adminId=#{adminId},</if>
+            <if test="orderNo != null">orderNo=#{orderNo},</if>
+            <if test="isDelete != null">isDelete=#{isDelete},</if>
+        </trim>
+    </sql>
+    <sql id="notice_C">
+        <trim prefix="WHERE" prefixOverrides="or | and">
+            <if test="id != null">and id=#{id}</if>
+            <if test="noticeTitle != null">and noticeTitle=#{noticeTitle}</if>
+            <if test="createTime != null">and createTime=#{createTime}</if>
+            <if test="noticeContent != null">and noticeContent=#{noticeContent}</if>
+            <if test="adminId != null">and adminId=#{adminId}</if>
+            <if test="orderNo != null">and orderNo=#{orderNo}</if>
+            <if test="isDelete != null">and isDelete=#{isDelete}</if>
+        </trim>
+    </sql>
+
+    <insert id="save" parameterType="com.yg.pojo.Notice" keyProperty="id"
+            useGeneratedKeys="true">insert into
+        t_notice (
+        <include refid="notice_K"/>
+        ) values(
+        <include refid="notice_V"/>
+        )
+    </insert>
+
+    <select id="queryById" parameterType="long" resultType="com.yg.pojo.Notice">
+        select * from t_notice where id=#{id}
+    </select>
+
+    <select id="queryAll" resultType="com.yg.pojo.Notice">
+        select * from t_notice
+    </select>
+
+    <select id="queryByPO" parameterType="com.yg.pojo.Notice" resultType="com.yg.pojo.Notice">
+        select * from t_notice
+        <include refid="notice_C"></include>
+    </select>
+    <select id="queryByPros" parameterType="map" resultType="com.yg.pojo.Notice">
+        select * FROM t_notice
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">${key}=#{item}</if>
+            </foreach>
+        </trim>
+    </select>
+    <select id="queryForPage" parameterType="com.yg.core.Page" resultType="com.yg.pojo.Notice">
+        select * from t_notice
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">
+                    <choose>
+                        <when test='key !="id"'>
+                            ${key} LIKE '%${item}%'
+                        </when>
+                        <otherwise>
+                            ${key}='${item}'
+                        </otherwise>
+                    </choose>
+                </if>
+            </foreach>
+        </trim>
+        <trim prefix="order by" prefixOverrides=",">
+            <foreach collection="orderMap" item="item" index="key" separator=",">
+                <if test="null != item">${key} ${item}</if>
+            </foreach>
+        </trim>
+    </select>
+
+    <update id="updateById" parameterType="com.yg.pojo.Notice">
+        update t_notice
+        <include refid="notice_U"></include>
+        where id=#{id}
+    </update>
+    <delete id="deleteById" parameterType="long">
+        delete from t_notice where id=#{id}
+    </delete>
+    <delete id="deleteByPO" parameterType="com.yg.pojo.Notice">
+        delete from t_notice
+        <include refid="notice_C"></include>
+    </delete>
+</mapper>

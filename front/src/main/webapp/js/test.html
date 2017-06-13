@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<form method="post">
+    <input type="number" name="test" max="60" min="1" title="请输入1至3个数字"/>
+    <input type="button" value="print"/>
+    <button value="fdsfdsfd">999</button>
+    <textarea name="abc" id="abc">
+    </textarea>
+</form>
+<span>
+    <select id="s1" name="province">
+        <option>省</option>
+    </select>
+
+    <select id="s2" name="city">
+        <option>市</option>
+    </select>
+    <select id="s3" name="area">
+        <option>街道</option>
+    </select>
+</span>
+
+<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=79277490&site=qq&menu=yes">
+    <img border="0" src="http://wpa.qq.com/pa?p=2:QQ号:45" alt="点击这里给我发消息" title="点击这里给我发消息">在线客服</a>
+<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=79277490&site=qq&menu=yes"><img border="0"
+                                                                                         src="http://wpa.qq.com/pa?p=2::52"
+                                                                                         alt="点击这里给我发消息"
+                                                                                         title="点击这里给我发消息"/></a>
+
+<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="geo.js"></script>
+<script>
+    function doPrint(how) {
+        myDoc = {
+            documents: document.getElementsByTagName('body')[0],
+
+            copyrights: '杰创软件拥有版权  www.jatools.com'
+        };
+        if (how == '打印预览...')
+            document.getElementById("jatoolsPrinter").printPreview(myDoc);   // 打印预览
+        else if (how == '打印...')
+            document.getElementById("jatoolsPrinter").print(myDoc, true);   // 打印前弹出打印设置对话框
+        else
+            document.getElementById("jatoolsPrinter").print(myDoc, false);       // 不弹出对话框打印
+    }
+    $("input[type='button']").click(function () {
+        doPrint('打印预览...');
+    })
+    setup();
+    function testJsonp(obj) {
+        console.log("回调函数执行")
+        console.log(obj.msg);
+    }
+    $(function () {
+        $("#abc").hide();
+    })
+    setTimeout("$('#abc').show()", 1000);
+    //    setTimeout("window.print()",2000);
+    $("#abc").blur(function () {
+        $.ajax({
+            url: "http://localhost:8088/testA",
+            data: {param: $(this).val()},
+            type: "GET",
+            dataType: "jsonp",
+            jsonpCallback: "testJsonp",
+            success: function (data) {
+                console.log("跨域调用完成..")
+                console.log(data);
+            }
+        });
+    })
+</script>
+<script>
+
+    var datagrid; //定义datagrid全局变量
+    var tableName = "t_product"; //定义datagrid全局变量
+    var listUrl = baseUrl + "/system/list/t_product";
+    var columnsInfo = [{
+        "is_nullable": "NO",
+        "column_name": "id",
+        "data_type": "bigint",
+        "column_comment": "ID",
+        "position": 1,
+        "column_type": "bigint(20)"
+    }, {
+        "is_nullable": "NO",
+        "column_name": "ctime",
+        "data_type": "datetime",
+        "column_comment": "创建时间",
+        "position": 2,
+        "column_type": "datetime"
+    }, {
+        "is_nullable": "NO",
+        "column_name": "utime",
+        "data_type": "datetime",
+        "column_comment": "修改时间",
+        "position": 3,
+        "column_type": "datetime"
+    }, {
+        "is_nullable": "YES",
+        "column_default": "",
+        "column_name": "imei",
+        "data_type": "varchar",
+        "column_comment": "产品编号",
+        "position": 4,
+        "column_type": "varchar(15)",
+        "maxLength": 15
+    }, {
+        "is_nullable": "NO",
+        "column_default": "",
+        "column_name": "name",
+        "data_type": "varchar",
+        "column_comment": "产品名称",
+        "position": 5,
+        "column_type": "varchar(50)",
+        "maxLength": 50
+    }, {
+        "is_nullable": "NO",
+        "column_default": "",
+        "column_name": "img",
+        "data_type": "varchar",
+        "column_comment": "缩略图",
+        "position": 6,
+        "column_type": "varchar(100)",
+        "maxLength": 100
+    }, {
+        "is_nullable": "YES",
+        "column_default": "{}",
+        "column_name": "imgs",
+        "data_type": "varchar",
+        "column_comment": "图集",
+        "position": 7,
+        "column_type": "varchar(4097)",
+        "maxLength": 4097
+    }, {
+        "is_nullable": "NO",
+        "column_default": "",
+        "column_name": "description",
+        "data_type": "varchar",
+        "column_comment": "描述",
+        "position": 8,
+        "column_type": "varchar(1000)",
+        "maxLength": 1000
+    }, {
+        "is_nullable": "NO",
+        "column_default": "0.00",
+        "column_name": "price",
+        "data_type": "double",
+        "column_comment": "价格",
+        "position": 9,
+        "column_type": "double(16,2)"
+    }, {
+        "is_nullable": "NO",
+        "column_default": "0.00",
+        "column_name": "priceY",
+        "data_type": "double",
+        "column_comment": "优惠价格",
+        "position": 10,
+        "column_type": "double(16,2)"
+    }, {
+        "is_nullable": "NO",
+        "column_default": "{}",
+        "column_name": "spec",
+        "data_type": "varchar",
+        "column_comment": "产品规格",
+        "position": 11,
+        "column_type": "varchar(4097)",
+        "maxLength": 4097
+    }, {
+        "is_nullable": "NO",
+        "column_default": "",
+        "column_name": "content",
+        "data_type": "varchar",
+        "column_comment": "产品详情",
+        "position": 12,
+        "column_type": "varchar(2048)",
+        "maxLength": 2048
+    }, {
+        "is_nullable": "NO",
+        "column_default": "0",
+        "column_name": "state",
+        "data_type": "enum",
+        "column_comment": "产品状态{\"0\":\"正常\",\"1\":\"停产\"}",
+        "position": 13,
+        "column_type": "enum('0','1')",
+        "maxLength": 1
+    }, {
+        "is_nullable": "NO",
+        "column_default": "CURRENT_TIMESTAMP",
+        "column_name": "onLineDate",
+        "data_type": "datetime",
+        "column_comment": "上线日期",
+        "position": 14,
+        "column_type": "datetime"
+    }, {
+        "is_nullable": "YES",
+        "column_default": "0",
+        "column_name": "sellCount",
+        "data_type": "int",
+        "column_comment": "累计售出",
+        "position": 15,
+        "column_type": "int(11)"
+    }, {
+        "is_nullable": "YES",
+        "column_default": "{}",
+        "column_name": "install",
+        "data_type": "varchar",
+        "column_comment": "安装描述",
+        "position": 16,
+        "column_type": "varchar(4097)",
+        "maxLength": 4097
+    }, {
+        "is_nullable": "YES",
+        "column_name": "accessories",
+        "data_type": "varchar",
+        "column_comment": "附件",
+        "position": 17,
+        "column_type": "varchar(4097)",
+        "maxLength": 4097
+    }];
+    var gridPageSize = 20; //定义默认的列表显示条数
+    var initData = {
+        "total": 2, "rows": [
+
+            {
+
+                "id": '900',
+                "ctime": "Wed Mar 09 00:00:00 CST 2016",
+                "utime": "Wed Mar 09 00:00:00 CST 2016",
+                "imei": '',
+                "name": '智护伞D6',
+                "img": 'http://www.gpssafesum.com:9088/image/2016/2/9/banner1.jpg',
+                "imgs": '{\"minBig\":\"fr32rf.jpg\",\"detail1\":\"http://www.gpssafesum.com:9088/image/2016/2/9/productImg_03.jpg\",\"detail2\":\"http://www.gpssafesum.com:9088/image/2016/2/9/productImg_05.jpg\",\"detail3\":\"http://www.gpssafesum.com:9088/image/2016/2/9/productImg_07.jpg\",\"detail4\":\"http://www.gpssafesum.com:9088/image/2016/2/9/productImg_11.jpg\",\"minSmall\":\"abc.jpg\"}',
+                "description": '新一代GPS云防盗智能终端精.准.智.连，树立行业新标杆',
+                "price": '369.0',
+                "priceY": '369.0',
+                "spec": '{\"大小\":\"3寸\",\"颜色\":\"白色\"}',
+                "content": '行业新标杆，精准智连',
+                "state": '0',
+                "onLineDate": "Wed Mar 09 00:00:00 CST 2016",
+                "sellCount": '0',
+                "install": '{\"v_use\":\"\",\"v_install\":\"http://yuntv.letv.com/bcloud.swfuu=ocbbmrqufu&amp;vu=42f08b7924&amp;auto_play=1&amp;gpcflag=1&amp;width=1024&amp;height=576\"}',
+                "accessories": '{}'
+                ,
+                "controler": "[{\"url\":\"/upload/product\",\"title\":\"上传banner图片\",\"val\":\"\",\"function\":\"upload\",\"position\":6},{\"url\":\"/upload/product\",\"title\":\"上传图片\",\"val\":\"4097\",\"function\":\"upload\",\"position\":7}]"
+
+            }
+            ,
+            {
+
+                "id": '901',
+                "ctime": "Wed Mar 09 00:00:00 CST 2016",
+                "utime": "Wed Mar 09 00:00:00 CST 2016",
+                "imei": '001',
+                "name": '智护伞T1',
+                "img": 'http://www.gpssafesum.com:9088/image/2016/2/9/banner3.jpg',
+                "imgs": '{\"detail1\":\"http://www.gpssafesum.com:9088/image/2016/2/9/producet3_05.jpg\",\"detail2\":\"http://www.gpssafesum.com:9088/image/2016/2/9/producet3_07.jpg\",\"detail3\":\"http://www.gpssafesum.com:9088/image/2016/2/9/producet3_10.jpg\",\"detail4\":\"http://www.gpssafesum.com:9088/image/2016/2/9/producet3_11.jpg\"}',
+                "description": '简单/使用/好玩/价值迭代，只为离你更近一些至真至简，为你而来！',
+                "price": '248.0',
+                "priceY": '248.0',
+                "spec": '{}',
+                "content": '智能超值，简单实用',
+                "state": '0',
+                "onLineDate": "Wed Mar 09 00:00:00 CST 2016",
+                "sellCount": '16465',
+                "install": '{\"v_use\":\"\",\"v_install\":\"http://yuntv.letv.com/bcloud.swfuu=ocbbmrqufu&amp;vu=42f08b7924&amp;auto_play=1&amp;gpcflag=1&amp;width=1024&amp;height=576\"}',
+                "accessories": '{\"1\":\"111\",\"2\":\"222\",\"3\":\"333\"}'
+                ,
+                "controler": "[{\"url\":\"/upload/product\",\"title\":\"上传banner图片\",\"val\":\"\",\"function\":\"upload\",\"position\":6},{\"url\":\"/upload/product\",\"title\":\"上传图片\",\"val\":\"4097\",\"function\":\"upload\",\"position\":7}]"
+
+            }
+
+        ], "error": "false", "msg": "处理出错！"
+    };
+    //固定列
+    var fzcolumns = [[
+        {field: "cBox", checkbox: true}
+
+    ]];
+    //数据列
+    var tbcolumns = [[
+
+        {
+            field: "id",
+            title: "ID",
+            sortable: true,
+            align: "center"
+
+        },
+        {
+            field: "ctime",
+            title: "创建时间",
+            sortable: true,
+            align: "center"
+            , formatter: dateFt
+        },
+        {
+            field: "utime",
+            title: "修改时间",
+            sortable: true,
+            align: "center"
+            , formatter: dateFt
+        },
+        {
+            field: "imei",
+            title: "产品编号",
+            sortable: true,
+            align: "center"
+
+        },
+        {
+            field: "name",
+            title: "产品名称",
+            sortable: true,
+            align: "center"
+
+        },
+        {
+            field: "img",
+            title: "缩略图",
+            sortable: true,
+            align: "center"
+
+        },
+        {
+            field: "imgs",
+            title: "图集",
+            sortable: true,
+            align: "center"
+
+        },
+        {
+            field: "description",
+            title: "描述",
+            sortable: true,
+            align: "center"
+
+        },
+        {
+            field: "price",
+            title: "价格",
+            sortable: true,
+            align: "center"
+
+        },
+        {
+            field: "priceY",
+            title: "优惠价格",
+            sortable: true,
+            align: "center"
+
+        },
+        {
+            field: "spec",
+            title: "产品规格",
+            sortable: true,
+            align: "center"
+
+        },
+        {
+            field: "content",
+            title: "产品详情",
+            sortable: true,
+            align: "center"
+
+        },
+        {
+            field: "state",
+            title: "产品状态",
+            sortable: true,
+            align: "center"
+            , formatter: enumFt
+        },
+        {
+            field: "onLineDate",
+            title: "上线日期",
+            sortable: true,
+            align: "center"
+            , formatter: dateFt
+        },
+        {
+            field: "sellCount",
+            title: "累计售出",
+            sortable: true,
+            align: "center"
+
+        },
+        {
+            field: "install",
+            title: "安装描述",
+            sortable: true,
+            align: "center"
+
+        },
+        {
+            field: "accessories",
+            title: "附件",
+            sortable: true,
+            align: "center"
+
+        }
+        , {field: "controler", title: "操作", align: "center", formatter: control_btn}
+    ]];
+    function dateFt(value, row, index) {
+        if (!value) return '';
+        return dateFormat(value, 'yyyy-MM-dd HH:mm:ss');
+    }
+    function enumFt(value, row, index) {
+        var fieldOpt = this;
+        var eMap = {}, val = '';
+        var sss = $.each(columnsInfo, function (i, o) {
+            if (o.column_name == fieldOpt.field) {
+                eMap = eval('(' + o.column_comment.substring(o.column_comment.indexOf('{')) + ')');
+                for (var s in eMap) {
+                    if (s == value) {
+                        val = eMap[s];
+                        break;
+                    }
+                }
+                return false;
+            }
+        })
+        return val;
+    }
+    var testJ = {
+        "status": 0,
+        "size": 31,
+        "total": 31,
+        "entity_name": "yanguan6108",
+        "distance": 5601.7161040107,
+        "start_point": {"longitude": 114.093116, "latitude": 22.555748, "coord_type": 3, "loc_time": 1470700025},
+        "end_point": {"longitude": 114.059054, "latitude": 22.580176, "coord_type": 3, "loc_time": 1470700499},
+        "points": [{
+            "loc_time": 1470700025,
+            "location": [114.093116, 22.555748],
+            "create_time": "2016-08-09 11:56:55"
+        }, {
+            "loc_time": 1470700030,
+            "location": [114.092783, 22.555713],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 24.786608,
+            "direction": 263
+        }, {
+            "loc_time": 1470700035,
+            "location": [114.092651, 22.555816],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 12.780471,
+            "direction": 310
+        }, {
+            "loc_time": 1470700060,
+            "location": [114.091444, 22.55577],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 17.868363,
+            "direction": 267
+        }, {
+            "loc_time": 1470700065,
+            "location": [114.091286, 22.555832],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 12.696289,
+            "direction": 293
+        }, {
+            "loc_time": 1470700070,
+            "location": [114.091174, 22.556081],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 21.59252,
+            "direction": 337
+        }, {
+            "loc_time": 1470700075,
+            "location": [114.091101, 22.556535],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 36.756158,
+            "direction": 351
+        }, {
+            "loc_time": 1470700086,
+            "location": [114.090985, 22.557441],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 33.20921,
+            "direction": 353
+        }, {
+            "loc_time": 1470700106,
+            "location": [114.090957, 22.558059],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 12.383586,
+            "direction": 357
+        }, {
+            "loc_time": 1470700116,
+            "location": [114.090804, 22.558442],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 16.346122,
+            "direction": 339
+        }, {
+            "loc_time": 1470700239,
+            "location": [114.072093, 22.558161],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 56.258612,
+            "direction": 269
+        }, {
+            "loc_time": 1470700258,
+            "location": [114.070581, 22.558238],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 29.471221,
+            "direction": 273
+        }, {
+            "loc_time": 1470700268,
+            "location": [114.069657, 22.558214],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 34.180943,
+            "direction": 268
+        }, {
+            "loc_time": 1470700369,
+            "location": [114.067669, 22.56912],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 43.845007,
+            "direction": 350
+        }, {
+            "loc_time": 1470700374,
+            "location": [114.067681, 22.569523],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 32.285469,
+            "direction": 1
+        }, {
+            "loc_time": 1470700384,
+            "location": [114.067565, 22.570294],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 31.168345,
+            "direction": 352
+        }, {
+            "loc_time": 1470700409,
+            "location": [114.067512, 22.572272],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 31.690355,
+            "direction": 358
+        }, {
+            "loc_time": 1470700421,
+            "location": [114.067439, 22.573405],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 37.872487,
+            "direction": 356
+        }, {
+            "loc_time": 1470700427,
+            "location": [114.0673, 22.574045],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 43.56113,
+            "direction": 348
+        }, {
+            "loc_time": 1470700433,
+            "location": [114.067015, 22.574779],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 52.037034,
+            "direction": 340
+        }, {
+            "loc_time": 1470700439,
+            "location": [114.066547, 22.575563],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 59.742294,
+            "direction": 331
+        }, {
+            "loc_time": 1470700442,
+            "location": [114.066251, 22.575935],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 61.611983,
+            "direction": 323
+        }, {
+            "loc_time": 1470700448,
+            "location": [114.065562, 22.576604],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 61.610781,
+            "direction": 316
+        }, {
+            "loc_time": 1470700454,
+            "location": [114.064785, 22.577142],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 59.846011,
+            "direction": 306
+        }, {
+            "loc_time": 1470700463,
+            "location": [114.063441, 22.577814],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 62.787557,
+            "direction": 298
+        }, {
+            "loc_time": 1470700466,
+            "location": [114.062946, 22.577984],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 65.087595,
+            "direction": 290
+        }, {
+            "loc_time": 1470700469,
+            "location": [114.062448, 22.578091],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 63.013901,
+            "direction": 283
+        }, {
+            "loc_time": 1470700478,
+            "location": [114.061002, 22.578284],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 60.019694,
+            "direction": 278
+        }, {
+            "loc_time": 1470700484,
+            "location": [114.06016, 22.57857],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 55.283729,
+            "direction": 290
+        }, {
+            "loc_time": 1470700490,
+            "location": [114.059661, 22.579194],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 51.764935,
+            "direction": 323
+        }, {
+            "loc_time": 1470700499,
+            "location": [114.059054, 22.580176],
+            "create_time": "2016-08-09 11:56:55",
+            "speed": 50.30462,
+            "direction": 330
+        }],
+        "message": "成功"
+    }
+    var ss={
+        "custom_content":{
+            "deviceId":221619,
+            "online":1,
+            "resBattery":34,
+            "mileage":0,
+            "defense":1,
+            "mobility":0,
+            "broke":0,
+            "elecDefense":-1,
+            "ptrlElec":0,
+            "messageType":1
+        }
+    }
+
+</script>
+</body>
+</html>

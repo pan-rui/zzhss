@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Coupon">
+    <sql id="coupon_K">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">userId,</if>
+            <if test="couponId != null">couponId,</if>
+            <if test="createTime != null">createTime,</if>
+            <if test="couponRemarks != null">couponRemarks,</if>
+            <if test="couponStatus != null">couponStatus,</if>
+            <if test="useTime != null">useTime,</if>
+        </trim>
+    </sql>
+    <sql id="coupon_V">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="couponId != null">#{couponId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="couponRemarks != null">#{couponRemarks},</if>
+            <if test="couponStatus != null">#{couponStatus},</if>
+            <if test="useTime != null">#{useTime},</if>
+        </trim>
+    </sql>
+    <sql id="coupon_U">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">userId=#{userId},</if>
+            <if test="couponId != null">couponId=#{couponId},</if>
+            <if test="createTime != null">createTime=#{createTime},</if>
+            <if test="couponRemarks != null">couponRemarks=#{couponRemarks},</if>
+            <if test="couponStatus != null">couponStatus=#{couponStatus},</if>
+            <if test="useTime != null">useTime=#{useTime},</if>
+        </trim>
+    </sql>
+    <sql id="coupon_C">
+        <trim prefix="WHERE" prefixOverrides="or | and">
+            <if test="id != null">and id=#{id}</if>
+            <if test="userId != null">and userId=#{userId}</if>
+            <if test="couponId != null">and couponId=#{couponId}</if>
+            <if test="createTime != null">and createTime=#{createTime}</if>
+            <if test="couponRemarks != null">and couponRemarks=#{couponRemarks}</if>
+            <if test="couponStatus != null">and couponStatus=#{couponStatus}</if>
+            <if test="useTime != null">and useTime=#{useTime},</if>
+        </trim>
+    </sql>
+
+    <insert id="save" parameterType="com.yg.pojo.Coupon" keyProperty="id"
+            useGeneratedKeys="true">insert into
+        t_coupon
+        <include refid="coupon_K"/>
+         values
+        <include refid="coupon_V"/>
+
+    </insert>
+
+    <select id="queryById" parameterType="long" resultType="com.yg.pojo.Coupon">
+        select * from t_coupon where id=#{id}
+    </select>
+
+    <select id="queryAll" resultType="com.yg.pojo.Coupon">
+        select * from t_coupon
+    </select>
+
+    <select id="queryByPO" parameterType="com.yg.pojo.Coupon" resultType="com.yg.pojo.Coupon">
+        select * from t_coupon
+        <include refid="coupon_C"></include>
+    </select>
+    <select id="queryByPros" parameterType="map" resultType="com.yg.pojo.Coupon">
+        select * FROM t_coupon
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">${key}=#{item}</if>
+            </foreach>
+        </trim>
+    </select>
+    <select id="queryForPage" parameterType="com.yg.core.Page" resultType="com.yg.pojo.Coupon">
+        select * from t_coupon
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">
+                    <choose>
+                        <when test='key !="id"'>
+                            ${key} LIKE '%${item}%'
+                        </when>
+                        <otherwise>
+                            ${key}='${item}'
+                        </otherwise>
+                    </choose>
+                </if>
+            </foreach>
+        </trim>
+        <trim prefix="order by" prefixOverrides=",">
+            <foreach collection="orderMap" item="item" index="key" separator=",">
+                <if test="null != item">${key} ${item}</if>
+            </foreach>
+        </trim>
+    </select>
+
+    <update id="updateById" parameterType="com.yg.pojo.Coupon">
+        update t_coupon
+        <include refid="coupon_U"></include>
+        where id=#{id}
+    </update>
+    <delete id="deleteById" parameterType="long">
+        delete from t_coupon where id=#{id}
+    </delete>
+    <delete id="deleteByPO" parameterType="com.yg.pojo.Coupon">
+        delete from t_coupon
+        <include refid="coupon_C"></include>
+    </delete>
+    <update id="updateState" parameterType="long">
+      UPDATE t_coupon tc,t_coupon_dict tcd SET tc.couponStatus='5' WHERE tcd.id=tc.couponId and tc.userId=#{userId} AND CURRENT_TIMESTAMP &gt; tcd.expirationDate
+    </update>
+    <select id="queryCoupons" parameterType="long" resultType="java.util.HashMap">
+        select tc.*,tcd.expirationDate,tcd.couponName,tcd.couponAmount,tcd.couponType,tcd.couponStatus status FROM t_coupon tc JOIN t_coupon_dict tcd ON tc.couponId=tcd.id WHERE tc.userId=#{userId}
+    </select>
+    <select id="checkCoupon" parameterType="long" resultType="com.yg.pojo.Coupon">
+        select * FROM t_coupon WHERE (userId=#{userId} OR userId is NULL) AND couponStatus = '2'
+    </select>
+    <insert id="payout" parameterType="map" keyProperty="id"
+            useGeneratedKeys="true">insert into
+        t_coupon (id, couponId, couponStatus,createTime
+        <if test='userId !=0'>,userId</if>
+        ) values
+        <foreach collection="lists" item="item" index="index" separator=",">
+            (#{item.id},#{item.couponId},'2',CURRENT_TIMESTAMP
+            <if test='userId !=0'>,#{userId}</if>
+            )
+        </foreach>
+    </insert>
+</mapper>

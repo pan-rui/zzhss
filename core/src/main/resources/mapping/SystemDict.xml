@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SystemDict">
+    <sql id="system_dict_K">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="code != null">code,</if>
+            <if test="name != null">name,</if>
+            <if test="value != null">value,</if>
+            <if test="description != null">description,</if>
+            <if test="status != null">status,</if>
+            <if test="ctime != null">ctime,</if>
+            <if test="orderNo != null">orderNo,</if>
+        </trim>
+    </sql>
+    <sql id="system_dict_V">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="code != null">#{code},</if>
+            <if test="name != null">#{name},</if>
+            <if test="value != null">#{value},</if>
+            <if test="description != null">#{description},</if>
+            <if test="status != null">#{status},</if>
+            <if test="ctime != null">#{ctime},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+        </trim>
+    </sql>
+    <sql id="system_dict_U">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null">code=#{code},</if>
+            <if test="name != null">name=#{name},</if>
+            <if test="value != null">value=#{value},</if>
+            <if test="description != null">description=#{description},</if>
+            <if test="status != null">status=#{status},</if>
+            <if test="ctime != null">ctime=#{ctime},</if>
+            <if test="orderNo != null">orderNo=#{orderNo},</if>
+        </trim>
+    </sql>
+    <sql id="system_dict_C">
+        <trim prefix="WHERE" prefixOverrides="or | and">
+            <if test="id != null">and id=#{id}</if>
+            <if test="code != null">and code=#{code}</if>
+            <if test="name != null">and name=#{name},</if>
+            <if test="value != null">and value=#{value}</if>
+            <if test="description != null">and description=#{description}</if>
+            <if test="status != null">and status=#{status}</if>
+            <if test="ctime != null">and ctime=#{ctime}</if>
+            <if test="orderNo != null">and orderNo=#{orderNo}</if>
+        </trim>
+    </sql>
+
+    <insert id="save" parameterType="com.yg.pojo.SystemDict" keyProperty="id"
+            useGeneratedKeys="true">insert into
+        t_system_dict (
+        <include refid="system_dict_K"/>
+        ) values(
+        <include refid="system_dict_V"/>
+        )
+    </insert>
+
+    <select id="queryById" parameterType="long" resultType="com.yg.pojo.SystemDict">
+        select * from t_system_dict where id=#{id}
+    </select>
+
+    <select id="queryAll" resultType="com.yg.pojo.SystemDict">
+        select * from t_system_dict
+    </select>
+
+    <select id="queryByPO" parameterType="com.yg.pojo.SystemDict" resultType="com.yg.pojo.SystemDict">
+        select * from t_system_dict
+        <include refid="system_dict_C"></include>
+    </select>
+    <select id="queryByPros" parameterType="map" resultType="com.yg.pojo.SystemDict">
+        select * FROM t_system_dict
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">${key}=#{item}</if>
+            </foreach>
+        </trim>
+    </select>
+    <select id="queryForPage" parameterType="com.yg.core.Page" resultType="com.yg.pojo.SystemDict">
+        select * from t_system_dict
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">
+                    <choose>
+                        <when test='key !="id"'>
+                            ${key} LIKE '%${item}%'
+                        </when>
+                        <otherwise>
+                            ${key}='${item}'
+                        </otherwise>
+                    </choose>
+                </if>
+            </foreach>
+             orderNo &lt; 100
+        </trim>
+        <trim prefix="order by" prefixOverrides=",">
+            <foreach collection="orderMap" item="item" index="key" separator=",">
+                <if test="null != item">${key} ${item}</if>
+            </foreach>
+        </trim>
+    </select>
+
+    <update id="updateById" parameterType="com.yg.pojo.SystemDict">
+        update t_system_dict
+        <include refid="system_dict_U"></include>
+        where id=#{id}
+    </update>
+    <delete id="deleteById" parameterType="long">
+        delete from t_system_dict where id=#{id}
+    </delete>
+    <delete id="deleteByPO" parameterType="com.yg.pojo.SystemDict">
+        delete from t_system_dict
+        <include refid="system_dict_C"></include>
+    </delete>
+</mapper>

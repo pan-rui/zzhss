@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Supplier">
+    <sql id="supplier_K">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="ctime != null">ctime,</if>
+            <if test="utime != null">utime,</if>
+            <if test="userId != null">userId,</if>
+            <if test="name != null">name,</if>
+            <if test="code != null">code,</if>
+            <if test="img != null">img,</if>
+            <if test="linkman != null">linkman,</if>
+            <if test="address != null">address,</if>
+            <if test="phone != null">phone,</if>
+            <if test="mail != null">mail,</if>
+            <if test="desc != null">desc,</if>
+        </trim>
+    </sql>
+    <sql id="supplier_V">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="ctime != null">#{ctime},</if>
+            <if test="utime != null">#{utime},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="code != null">#{code},</if>
+            <if test="img != null">#{img},</if>
+            <if test="linkman != null">#{linkman},</if>
+            <if test="address != null">#{address},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="mail != null">#{mail},</if>
+            <if test="desc != null">#{desc},</if>
+        </trim>
+    </sql>
+    <sql id="supplier_U">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ctime != null">ctime=#{ctime},</if>
+            <if test="utime != null">utime=#{utime},</if>
+            <if test="userId != null">userId=#{userId},</if>
+            <if test="name != null">name=#{name},</if>
+            <if test="code != null">code=#{code},</if>
+            <if test="img != null">img=#{img},</if>
+            <if test="linkman != null">linkman=#{linkman},</if>
+            <if test="address != null">address=#{address},</if>
+            <if test="phone != null">phone=#{phone},</if>
+            <if test="mail != null">mail=#{mail},</if>
+            <if test="desc != null">desc=#{desc},</if>
+        </trim>
+    </sql>
+    <sql id="supplier_C">
+        <trim prefix="WHERE" prefixOverrides="or | and">
+            <if test="id != null">and id=#{id}</if>
+            <if test="ctime != null">and ctime=#{ctime}</if>
+            <if test="utime != null">and utime=#{utime}</if>
+            <if test="userId != null">and userId=#{userId}</if>
+            <if test="name != null">and name=#{name}</if>
+            <if test="code != null">and code=#{code}</if>
+            <if test="img != null">and img=#{img}</if>
+            <if test="linkman != null">and linkman=#{linkman}</if>
+            <if test="address != null">and address=#{address}</if>
+            <if test="phone != null">and phone=#{phone}</if>
+            <if test="mail != null">and mail=#{mail}</if>
+            <if test="desc != null">and desc=#{desc}</if>
+        </trim>
+    </sql>
+
+    <insert id="save" parameterType="com.yg.pojo.Supplier" keyProperty="id"
+            useGeneratedKeys="true">insert into
+        t_supplier (
+        <include refid="supplier_K"/>
+        ) values(
+        <include refid="supplier_V"/>
+        )
+    </insert>
+
+    <select id="queryById" parameterType="long" resultType="com.yg.pojo.Supplier">
+        select * from t_supplier where id=#{id}
+    </select>
+
+    <select id="queryAll" resultType="com.yg.pojo.Supplier">
+        select * from t_supplier
+    </select>
+
+    <select id="queryByPO" parameterType="com.yg.pojo.Supplier" resultType="com.yg.pojo.Supplier">
+        select * from t_supplier
+        <include refid="supplier_C"></include>
+    </select>
+    <select id="queryByPros" parameterType="map" resultType="com.yg.pojo.Supplier">
+        select * FROM t_supplier
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">${key}=#{item}</if>
+            </foreach>
+        </trim>
+    </select>
+
+    <select id="queryForPage" parameterType="map" resultType="com.yg.pojo.Supplier">
+        select * FROM t_supplier
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">
+                    <choose>
+                        <when test='key !="id"'>
+                            ${key} LIKE '%${item}%'
+                        </when>
+                        <otherwise>
+                            ${key}='${item}'
+                        </otherwise>
+                    </choose>
+                </if>
+            </foreach>
+        </trim>
+        <if test="orderMap != null">
+            <trim prefix="order by" prefixOverrides=",">
+                <foreach collection="orderMap" item="item" index="key" separator=",">
+                    <if test="null != item">${key} ${item}</if>
+                </foreach>
+            </trim>
+        </if>
+    </select>
+
+    <update id="updateById" parameterType="com.yg.pojo.Supplier">
+        update t_supplier
+        <include refid="supplier_U"></include>
+        where id=#{id}
+    </update>
+    <delete id="deleteById" parameterType="long">
+        delete from t_supplier where id=#{id}
+    </delete>
+    <delete id="deleteByPO" parameterType="com.yg.pojo.Supplier">
+        delete from t_supplier
+        <include refid="supplier_C"></include>
+    </delete>
+</mapper>

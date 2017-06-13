@@ -1,0 +1,28 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0041)http://printfree.jatools.com/howprint.htm -->
+<HTML><HEAD><META content="IE=5.0000" http-equiv="X-UA-Compatible">
+       <TITLE>直接打印，选择打印机打印，打印预览</TITLE>       
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">       
+<SCRIPT> 
+         function doPrint(how) {
+         	myDoc = {
+         		documents: document.getElementsByTagName('body')[0],
+         		
+         		copyrights: '杰创软件拥有版权  www.jatools.com'    
+         	};
+         	if(how == '打印预览...')
+           			document.getElementById("jatoolsPrinter").printPreview(myDoc );   // 打印预览
+          	else if(how == '打印...')
+          	        document.getElementById("jatoolsPrinter").print(myDoc ,true);   // 打印前弹出打印设置对话框
+            else 
+          	        document.getElementById("jatoolsPrinter").print(myDoc ,false);       // 不弹出对话框打印
+         }
+      </SCRIPT>
+    
+<META name="GENERATOR" content="MSHTML 11.00.9600.18231"></HEAD>    
+<BODY style="padding: 10px;"><SPAN style="color: rgb(183, 193, 211); font-size: 25px;">直接打印，选择打印机打印，打印预览</SPAN><BR><BR><INPUT onclick="doPrint('打印预览...')" type="button" value="打印预览..."> 
+      <INPUT onclick="doPrint('打印...')" type="button" value="打印...">       
+<INPUT onclick="doPrint('打印')" type="button" value="打印"><BR><BR>
+<DIV id="page1" style="border: 2px solid green; border-image: none; width: 300px; height: 300px;">Hello 
+world</DIV><!-- 插入打印控件 -->       
+<OBJECT id="jatoolsPrinter" classid="CLSID:B43D3361-D075-4BE2-87FE-057188254255" codebase="jatoolsPrinter.cab#version=8,6,0,0"></OBJECT>     </BODY></HTML>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Role">
+    <sql id="role_K">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="roleName != null">roleName,</if>
+            <if test="description != null">description,</if>
+        </trim>
+    </sql>
+    <sql id="role_V">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="roleName != null">#{roleName},</if>
+            <if test="description != null">#{description},</if>
+        </trim>
+    </sql>
+    <sql id="role_U">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roleName != null">roleName=#{roleName},</if>
+            <if test="description != null">description=#{description},</if>
+        </trim>
+    </sql>
+    <sql id="role_C">
+        <trim prefix="WHERE" prefixOverrides="or | and">
+            <if test="id != null">and id=#{id}</if>
+            <if test="roleName != null">and roleName=#{roleName}</if>
+            <if test="description != null">and description=#{description}</if>
+        </trim>
+    </sql>
+
+    <insert id="save" parameterType="com.yg.pojo.Role" keyProperty="id"
+            useGeneratedKeys="true">insert into
+        t_role (
+        <include refid="role_K"/>
+        ) values(
+        <include refid="role_V"/>
+        )
+    </insert>
+
+    <select id="queryById" parameterType="long" resultType="com.yg.pojo.Role">
+        select * from t_role where id=#{id}
+    </select>
+
+    <select id="queryAll" resultType="com.yg.pojo.Role">
+        select * from t_role
+    </select>
+
+    <select id="queryByPO" parameterType="com.yg.pojo.Role" resultType="com.yg.pojo.Role">
+        select * from t_role
+        <include refid="role_C"></include>
+    </select>
+    <select id="queryByPros" parameterType="map" resultType="com.yg.pojo.Role">
+        select * FROM t_role
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">${key}=#{item}</if>
+            </foreach>
+        </trim>
+    </select>
+    <select id="queryForPage" parameterType="com.yg.core.Page" resultType="com.yg.pojo.Role">
+        select * from t_role
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">
+                    <choose>
+                        <when test='key !="id"'>
+                            ${key} LIKE '%${item}%'
+                        </when>
+                        <otherwise>
+                            ${key}='${item}'
+                        </otherwise>
+                    </choose>
+                </if>
+            </foreach>
+        </trim>
+        <trim prefix="order by" prefixOverrides=",">
+            <foreach collection="orderMap" item="item" index="key" separator=",">
+                <if test="null != item">${key} ${item}</if>
+            </foreach>
+        </trim>
+    </select>
+
+    <update id="updateById" parameterType="com.yg.pojo.Role">
+        update t_role
+        <include refid="role_U"></include>
+        where id=#{id}
+    </update>
+    <delete id="deleteById" parameterType="long">
+        delete from t_role where id=#{id}
+    </delete>
+    <delete id="deleteByPO" parameterType="com.yg.pojo.Role">
+        delete from t_role
+        <include refid="role_C"></include>
+    </delete>
+</mapper>

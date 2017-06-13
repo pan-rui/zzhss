@@ -1,0 +1,82 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: Microsoft YaHei, Simsun;
+}
+
+.main {
+    height: 180px;
+    padding-top: 175px;
+    background-repeat: no-repeat;
+    z-index:10;width:120px;position: fixed;left:1200px;top:260px;
+}
+
+.bg {
+    background-image: url(/images/linkman.png);
+}
+
+.bg {
+    *background-image: url(/images/linkman.png)
+}
+
+.btn {
+    position: absolute;
+    display: block;
+}
+
+.btnText {
+    top: 85px;
+    left: 16px;
+    display: block;
+    width: 84px;
+    height: 28px;
+    font-size: 12px;
+    font-weight: normal;
+    color: #000;
+    text-align: center;
+    text-decoration: none;
+    line-height: 22px;
+    position: relative;
+}
+
+.offlineBtnText {
+    display: none;
+}
+
+.offline .onlineBtnText {
+    display: none;
+}
+
+.offline .offlineBtnText {
+    display: inline;
+}
+
+.closeBtn {
+    top: 0;
+    right: 6px;
+    width: 39px;
+    height: 26px;
+}
+
+.content .subTitle {
+    height: 18px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #095996;
+    line-height: 18px;
+    text-align: center;
+    overflow-y: hidden;
+}
+
+.content .plainText {
+    height: 28px;
+    margin-top: 14px;
+    padding: 0 5px;
+    font-size: 12px;
+    color: #2f6b99;
+    line-height: 14px;
+    text-align: center;
+    word-wrap: break-word;
+    overflow-y: hidden;
+}
+

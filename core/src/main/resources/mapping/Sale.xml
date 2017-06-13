@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Sale">
+    <sql id="sale_K">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">userId,</if>
+            <if test="orderId != null">orderId,</if>
+            <if test="saleType != null">saleType,</if>
+            <if test="saleCount != null">saleCount,</if>
+            <if test="description != null">description,</if>
+            <if test="picture != null">picture,</if>
+            <if test="evidence != null">evidence,</if>
+            <if test="backType != null">backType,</if>
+            <if test="address != null">address,</if>
+            <if test="name != null">name,</if>
+            <if test="productId != null">productId,</if>
+            <if test="phone != null">phone,</if>
+            <if test="ctime != null">ctime,</if>
+        </trim>
+    </sql>
+    <sql id="sale_V">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="orderId != null">#{orderId},</if>
+            <if test="saleType != null">#{saleType},</if>
+            <if test="saleCount != null">#{saleCount},</if>
+            <if test="description != null">#{description},</if>
+            <if test="picture != null">#{picture},</if>
+            <if test="evidence != null">#{evidence},</if>
+            <if test="backType != null">#{backType},</if>
+            <if test="address != null">#{address},</if>
+            <if test="name != null">#{name},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="ctime != null">#{ctime},</if>
+        </trim>
+    </sql>
+    <sql id="sale_U">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">userId=#{userId},</if>
+            <if test="orderId != null">orderId=#{orderId},</if>
+            <if test="saleType != null">saleType=#{saleType},</if>
+            <if test="saleCount != null">saleCount=#{saleCount},</if>
+            <if test="description != null">description=#{description},</if>
+            <if test="picture != null">picture=#{picture},</if>
+            <if test="evidence != null">evidence=#{evidence},</if>
+            <if test="backType != null">backType=#{backType},</if>
+            <if test="address != null">address=#{address},</if>
+            <if test="name != null">name=#{name},</if>
+            <if test="productId != null">productId=#{productId},</if>
+            <if test="phone != null">phone=#{phone},</if>
+            <if test="ctime != null">ctime=#{ctime},</if>
+        </trim>
+    </sql>
+    <sql id="sale_C">
+        <trim prefix="WHERE" prefixOverrides="or | and">
+            <if test="id != null">and id=#{id}</if>
+            <if test="userId != null">and userId=#{userId}</if>
+            <if test="orderId != null">and orderId=#{orderId}</if>
+            <if test="saleType != null">and saleType=#{saleType}</if>
+            <if test="saleCount != null">and saleCount=#{saleCount}</if>
+            <if test="description != null">and description=#{description}</if>
+            <if test="picture != null">and picture=#{picture}</if>
+            <if test="evidence != null">and evidence=#{evidence}</if>
+            <if test="backType != null">and backType=#{backType}</if>
+            <if test="address != null">and address=#{address}</if>
+            <if test="name != null">and name=#{name}</if>
+            <if test="productId != null">and productId=#{productId}</if>
+            <if test="phone != null">and phone=#{phone}</if>
+            <if test="ctime != null">and ctime=#{ctime}</if>
+        </trim>
+    </sql>
+
+    <insert id="save" parameterType="com.yg.pojo.Sale" keyProperty="id"
+            useGeneratedKeys="true">insert into
+        t_sale (
+        <include refid="sale_K"/>
+        ) values(
+        <include refid="sale_V"/>
+        )
+    </insert>
+
+    <select id="queryById" parameterType="long" resultType="com.yg.pojo.Sale">
+        select * from t_sale where id=#{id}
+    </select>
+
+    <select id="queryAll" resultType="com.yg.pojo.Sale">
+        select * from t_sale   
+ </select>
+
+    <select id="queryByPO" parameterType="com.yg.pojo.Sale" resultType="com.yg.pojo.Sale">
+        select * from t_sale
+        <include refid="sale_C"></include>
+    </select>
+    <select id="queryByPros" parameterType="map" resultType="com.yg.pojo.Sale">
+        select * FROM t_sale
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">${key}=#{item}</if>
+            </foreach>
+        </trim>
+    </select>
+    <select id="queryForPage" parameterType="map" resultType="com.yg.pojo.Sale">
+        select * FROM t_sale
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">
+                    <choose>
+                        <when test='key !="id"'>
+                            ${key} LIKE '%${item}%'
+                        </when>
+                        <otherwise>
+                            ${key}='${item}'
+                        </otherwise>
+                    </choose>
+                </if>
+            </foreach>
+        </trim>
+        <if test="orderMap != null">
+            <trim prefix="order by" prefixOverrides=",">
+                <foreach collection="orderMap" item="item" index="key" separator=",">
+                    <if test="null != item">${key} ${item}</if>
+                </foreach>
+            </trim>
+        </if>
+    </select>
+
+    <update id="updateById" parameterType="com.yg.pojo.Sale">
+        update t_sale
+        <include refid="sale_U"></include>
+        where id=#{id}
+    </update>
+    <delete id="deleteById" parameterType="long">
+        delete from t_sale where id=#{id}
+    </delete>
+    <delete id="deleteByPO" parameterType="com.yg.pojo.Sale">
+        delete from t_sale
+        <include refid="sale_C"></include>
+    </delete>
+</mapper>

@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Order">
+    <sql id="order_K">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">userId,</if>
+            <if test="ctime != null">ctime,</if>
+            <if test="utime != null">utime,</if>
+            <if test="orderSn != null">orderSn,</if>
+            <if test="payType != null">payType,</if>
+            <if test="contact != null">contact,</if>
+            <if test="storeId != null">storeId,</if>
+            <if test="money != null">money,</if>
+            <if test="discount != null">discount,</if>
+            <if test="preferential != null">preferential,</if>
+            <if test="freight != null">freight,</if>
+            <if test="bill != null">bill,</if>
+            <if test="couponId != null">couponId,</if>
+            <if test="couponPrice != null">couponPrice,</if>
+            <if test="payMoney != null">payMoney,</if>
+            <if test="orderMoney != null">orderMoney,</if>
+            <if test="payNum != null">payNum,</if>
+            <if test="state != null">state,</if>
+            <if test="description != null">description,</if>
+            <if test="payInfo != null">payInfo,</if>
+            <if test="startDeliveryTime != null">startDeliveryTime,</if>
+            <if test="endDeliveryTime != null">endDeliveryTime,</if>
+            <if test="logistics != null">logistics,</if>
+            <if test="logisticsId != null">logisticsId,</if>
+            <if test="remark != null">remark,</if>
+            <if test="logisticsState != null">logisticsState,</if>
+            <if test="deliveryTime != null">deliveryTime,</if>
+            <if test="reqIp != null">reqIp,</if>
+            <if test="shipments != null">shipments,</if>
+            <if test="refundInfo != null">refundInfo,</if>
+        </trim>
+    </sql>
+    <sql id="order_V">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="ctime != null">#{ctime},</if>
+            <if test="utime != null">#{utime},</if>
+            <if test="orderSn != null">#{orderSn},</if>
+            <if test="payType != null">#{payType},</if>
+            <if test="contact != null">#{contact},</if>
+            <if test="storeId != null">#{storeId},</if>
+            <if test="money != null">#{money},</if>
+            <if test="discount != null">#{discount},</if>
+            <if test="preferential != null">#{preferential},</if>
+            <if test="freight != null">#{freight},</if>
+            <if test="bill != null">#{bill},</if>
+            <if test="couponId != null">#{couponId},</if>
+            <if test="couponPrice != null">#{couponPrice},</if>
+            <if test="payMoney != null">#{payMoney},</if>
+            <if test="orderMoney != null">#{orderMoney},</if>
+            <if test="payNum != null">#{payNum},</if>
+            <if test="state != null">#{state},</if>
+            <if test="description != null">#{description},</if>
+            <if test="payInfo != null">#{payInfo},</if>
+            <if test="startDeliveryTime != null">#{startDeliveryTime},</if>
+            <if test="endDeliveryTime != null">#{endDeliveryTime},</if>
+            <if test="logistics != null">#{logistics},</if>
+            <if test="logisticsId != null">#{logisticsId},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="logisticsState != null">#{logisticsState},</if>
+            <if test="deliveryTime != null">#{deliveryTime},</if>
+            <if test="reqIp != null">#{reqIp},</if>
+            <if test="shipments != null">#{shipments},</if>
+            <if test="refundInfo != null">#{refundInfo},</if>
+        </trim>
+    </sql>
+    <sql id="order_U">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">userId=#{userId},</if>
+            <if test="ctime != null">ctime=#{ctime},</if>
+            <choose>
+                <when test="utime != null">utime=#{utime},</when>
+                <otherwise>utime=CURRENT_TIMESTAMP,</otherwise>
+            </choose>
+            <if test="orderSn != null">orderSn=#{orderSn},</if>
+            <if test="payType != null">payType=#{payType},</if>
+            <if test="contact != null">contact=#{contact},</if>
+            <if test="storeId != null">storeId=#{storeId},</if>
+            <if test="money != null">money=#{money},</if>
+            <if test="discount != null">discount=#{discount},</if>
+            <if test="preferential != null">preferential=#{preferential},</if>
+            <if test="freight != null">freight=#{freight},</if>
+            <if test="bill != null">bill=#{bill},</if>
+            <if test="couponId != null">couponId=#{couponId},</if>
+            <if test="couponPrice != null">couponPrice=#{couponPrice},</if>
+            <if test="payMoney != null">payMoney=#{payMoney},</if>
+            <if test="orderMoney != null">orderMoney=#{orderMoney},</if>
+            <if test="payNum != null">payNum=#{payNum},</if>
+            <if test="state != null">state=#{state},</if>
+            <if test="description != null">description=#{description},</if>
+            <if test="payInfo != null">payInfo=#{payInfo},</if>
+            <if test="startDeliveryTime != null">startDeliveryTime=#{startDeliveryTime},</if>
+            <if test="endDeliveryTime != null">endDeliveryTime=#{endDeliveryTime},</if>
+            <if test="logistics != null">logistics=#{logistics},</if>
+            <if test="logisticsId != null">logisticsId=#{logisticsId},</if>
+            <if test="remark != null">remark=#{remark},</if>
+            <if test="logisticsState != null">logisticsState=#{logisticsState},</if>
+            <if test="deliveryTime != null">deliveryTime=#{deliveryTime},</if>
+            <if test="reqIp != null">reqIp=#{reqIp},</if>
+            <if test="shipments != null">shipments=#{shipments},</if>
+            <if test="refundInfo != null">refundInfo=#{refundInfo},</if>
+        </trim>
+    </sql>
+    <sql id="order_C">
+        <trim prefix="WHERE" prefixOverrides="or | and">
+            <if test="id != null">and id=#{id}</if>
+            <if test="userId != null">and userId=#{userId}</if>
+            <if test="ctime != null">and ctime=#{ctime}</if>
+            <if test="utime != null">and utime=#{utime}</if>
+            <if test="orderSn != null">and orderSn=#{orderSn}</if>
+            <if test="payType != null">and payType=#{payType}</if>
+            <if test="contact != null">and contact=#{contact}</if>
+            <if test="storeId != null">and storeId=#{storeId}</if>
+            <if test="money != null">and money=#{money}</if>
+            <if test="discount != null">and discount=#{discount}</if>
+            <if test="preferential != null">and preferential=#{preferential}</if>
+            <if test="freight != null">and freight=#{freight}</if>
+            <if test="bill != null">and bill=#{bill}</if>
+            <if test="couponId != null">and couponId=#{couponId}</if>
+            <if test="couponPrice != null">and couponPrice=#{couponPrice}</if>
+            <if test="payMoney != null">and payMoney=#{payMoney}</if>
+            <if test="orderMoney != null">and orderMoney=#{orderMoney}</if>
+            <if test="payNum != null">and payNum=#{payNum}</if>
+            <if test="state != null">and state=#{state}</if>
+            <if test="description != null">and description=#{description}</if>
+            <if test="payInfo != null">and payInfo=#{payInfo}</if>
+            <if test="startDeliveryTime != null">and startDeliveryTime=#{startDeliveryTime}</if>
+            <if test="endDeliveryTime != null">and endDeliveryTime=#{endDeliveryTime}</if>
+            <if test="logistics != null">and logistics=#{logistics}</if>
+            <if test="logisticsId != null">and logisticsId=#{logisticsId}</if>
+            <if test="remark != null">and remark=#{remark}</if>
+            <if test="logisticsState != null">and logisticsState=#{logisticsState}</if>
+            <if test="deliveryTime != null">and deliveryTime=#{deliveryTime},</if>
+            <if test="reqIp != null">and reqIp=#{reqIp},</if>
+            <if test="shipments != null">and shipments=#{shipments},</if>
+            <if test="refundInfo != null">and refundInfo=#{refundInfo},</if>
+        </trim>
+    </sql>
+
+    <insert id="save" parameterType="com.yg.pojo.Order" keyProperty="id"
+            useGeneratedKeys="true">insert into
+        t_order (
+        <include refid="order_K"/>
+        ) values(
+        <include refid="order_V"/>
+        )
+    </insert>
+
+    <select id="queryById" parameterType="long" resultType="com.yg.pojo.Order">
+        select * from t_order where id=#{id}
+    </select>
+
+    <select id="queryAll" resultType="com.yg.pojo.Order">
+        select * from t_order   
+ </select>
+
+    <select id="queryByPO" parameterType="com.yg.pojo.Order" resultType="com.yg.pojo.Order">
+        select * from t_order
+        <include refid="order_C"></include>
+    </select>
+    <select id="queryByPros" parameterType="map" resultType="com.yg.pojo.Order">
+        select * FROM t_order
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">${key}=#{item}</if>
+            </foreach>
+        </trim>
+    </select>
+
+    <select id="queryForPage" parameterType="map" resultType="com.yg.pojo.Order">
+        select * FROM t_order
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">
+                    <choose>
+                        <when test='key == "state"'>
+                          '${item}' LIKE concat('%',state,'%')
+                        </when>
+                        <when test='key !="id"'>
+                            ${key} LIKE '%${item}%'
+                        </when>
+                        <otherwise>
+                            ${key}='${item}'
+                        </otherwise>
+                    </choose>
+                </if>
+            </foreach>
+        </trim>
+        <if test="orderMap != null">
+            <trim prefix="order by" prefixOverrides=",">
+                <foreach collection="orderMap" item="item" index="key" separator=",">
+                    <if test="null != item">${key} ${item}</if>
+                </foreach>
+            </trim>
+        </if>
+    </select>
+
+    <update id="updateById" parameterType="com.yg.pojo.Order">
+        update t_order
+        <include refid="order_U"></include>
+        where id=#{id}
+    </update>
+
+    <update id="updatePayOrder" parameterType="map">
+        update t_order
+        <include refid="order_U"></include>
+        where id=#{id} and state='0'
+    </update>
+
+    <update id="updateByPayNum"  parameterType="map">
+        update t_order
+        SET utime=CURRENT_TIMESTAMP,state=#{state}
+        where payNum=#{payNum} and state='6'
+    </update>
+
+    <update id="updateByLogis" parameterType="map">
+        update t_order
+        <include refid="order_U"></include>
+        where logisticsId=#{logisticsId}
+    </update>
+    <delete id="deleteById" parameterType="long">
+        delete from t_order where id=#{id}
+    </delete>
+    <delete id="deleteByPO" parameterType="com.yg.pojo.Order">
+        delete from t_order
+        <include refid="order_C"></include>
+    </delete>
+
+    <select id="queryOrderInfo" parameterType="long" resultMap="orderInfo">
+        select o.*,
+        ot.id otId,ot.price otPrice,ot.priceY otPriceY,ot.orderId,ot.ctime otCtime,ot.count,
+        d.id dId,d.name dName,d.phone dPhone,d.province dProvince,d.city dCity,d.area dArea,d.exact dExact,d.zip dZip,
+        p.imgs pImgs, p.name pName, p.description pDescription,p.imei pImei, p.ctime pCtime,p.id pId
+        FROM t_order o JOIN t_order_item ot ON o.id=ot.orderId JOIN t_delivery d ON o.contact=d.id JOIN t_product p ON ot.prodId=p.id WHERE o.userId=#{userId} order by ctime desc
+    </select>
+    <select id="searchOrderInfo" parameterType="map" resultMap="orderInfo">
+        select o.*,
+        ot.id otId,ot.price otPrice,ot.priceY otPriceY,ot.orderId,ot.ctime otCtime,ot.count,
+        d.id dId,d.name dName,d.phone dPhone,d.province dProvince,d.city dCity,d.area dArea,d.exact dExact,d.zip dZip,
+        p.imgs pImgs, p.name pName, p.description pDescription,p.imei pImei, p.ctime pCtime,p.id pId
+        FROM t_order o JOIN t_order_item ot ON o.id=ot.orderId JOIN t_delivery d ON o.contact=d.id JOIN t_product p ON ot.prodId=p.id WHERE o.userId=#{userId} AND (o.id=#{patten} or p.name like CONCAT('%',#{patten},'%'))
+    </select>
+    <resultMap id="orderInfo" type="com.yg.pojo.Order" autoMapping="true">
+        <id property="id" column="id"/>
+        <!--<result property="userId" column="o.userId"/>-->
+        <!--<result property="ctime" column="o.ctime"/>-->
+        <association property="delivery" javaType="com.yg.pojo.Delivery" autoMapping="true">
+            <id property="id" column="dId"/>
+            <result property="name" column="dName"/>
+            <result property="phone" column="dPhone"/>
+            <result property="province" column="dProvince"/>
+            <result property="city" column="dCity"/>
+            <result property="area" column="dArea"/>
+            <result property="exact" column="dExact"/>
+            <result property="zip" column="dZip"/>
+        </association>
+        <collection property="orderItems" ofType="com.yg.pojo.OrderItem" autoMapping="true">
+            <id property="id" column="otId"/>
+            <result property="ctime" column="otCtime"/>
+            <result property="price" column="otPrice"/>
+            <result property="priceY" column="otPriceY"/>
+            <!--<result property="count" column="otCount"/>-->
+            <association property="product" javaType="com.yg.pojo.Product">
+                <id property="id" column="pId"/>
+                <result property="ctime" column="pCtime"/>
+                <result property="imei" column="pImei"/>
+                <result property="name" column="pName"/>
+                <result property="description" column="pDescription"/>
+                <result property="imgs" column="pImgs"/>
+            </association>
+        </collection>
+    </resultMap>
+    <select id="cancelOrder" statementType="CALLABLE" parameterType="java.util.HashMap">
+        <![CDATA[
+           {call yg.cancelOrder(
+           #{cnt,mode=OUT,jdbcType=INTEGER}
+           )}
+       ]]>
+    </select>
+    <select id="orderDetail" parameterType="map" resultMap="orderDetail">
+        select o.*,
+        ot.id otId,ot.price otPrice,ot.priceY otPriceY,ot.orderId,ot.ctime otCtime,ot.count,
+        d.id dId,d.name dName,d.phone dPhone,d.province dProvince,d.city dCity,d.area dArea,d.exact dExact,d.zip dZip,
+        p.imgs pImgs, p.name pName, p.description pDescription,p.imei pImei, p.ctime pCtime,p.id pId
+        <if test='couponId !=null and couponId !="" and couponId != "0"'>
+            ,tcd.id tcdId,tcd.couponName,tcd.couponAmount
+        </if>
+        FROM t_order o JOIN t_order_item ot ON o.id=ot.orderId JOIN t_delivery d ON o.contact=d.id JOIN t_product p ON ot.prodId=p.id
+        <if test='couponId !=null and couponId != "" and couponId !="0"'>
+           JOIN t_coupon co ON co.id LIKE concat(UPPER(o.couponId),'%') JOIN t_coupon_dict tcd ON co.couponId=tcd.id
+        </if> WHERE o.id=#{orderId}
+    </select>
+    <resultMap id="orderDetail" type="com.yg.pojo.Order" autoMapping="true">
+        <id property="id" column="id"/>
+        <!--<result property="userId" column="o.userId"/>-->
+        <!--<result property="ctime" column="o.ctime"/>-->
+        <association property="delivery" javaType="com.yg.pojo.Delivery" autoMapping="true">
+            <id property="id" column="dId"/>
+            <result property="name" column="dName"/>
+            <result property="phone" column="dPhone"/>
+            <result property="province" column="dProvince"/>
+            <result property="city" column="dCity"/>
+            <result property="area" column="dArea"/>
+            <result property="exact" column="dExact"/>
+            <result property="zip" column="dZip"/>
+        </association>
+        <association property="couponDict" javaType="com.yg.pojo.CouponDict" autoMapping="true">
+            <id property="id" column="tcdId"/>
+        </association>
+        <collection property="orderItems" ofType="com.yg.pojo.OrderItem" autoMapping="true">
+            <id property="id" column="otId"/>
+            <result property="ctime" column="otCtime"/>
+            <result property="price" column="otPrice"/>
+            <result property="priceY" column="otPriceY"/>
+            <result property="count" column="otCount"/>
+            <association property="product" javaType="com.yg.pojo.Product">
+                <id property="id" column="pId"/>
+                <result property="ctime" column="pCtime"/>
+                <result property="imei" column="pImei"/>
+                <result property="name" column="pName"/>
+                <result property="description" column="pDescription"/>
+                <result property="imgs" column="pImgs"/>
+            </association>
+        </collection>
+    </resultMap>
+
+    <update id="cancelOrderTime" parameterType="long">
+        UPDATE t_order SET state ='8' WHERE userId=#{userId} AND state IN ('0') and TIMESTAMPDIFF(HOUR, ctime, CURRENT_TIMESTAMP) &gt;= 24
+    </update>
+
+    <select id="orderInfo" parameterType="long" resultMap="order">
+         select o.*,
+        ot.id otId,ot.price otPrice,ot.priceY otPriceY,ot.orderId,ot.ctime otCtime,ot.count otCount,ot.prodName,
+        d.id dId,d.name dName,d.phone dPhone,d.province dProvince,d.city dCity,d.area dArea,d.exact dExact,d.zip dZip
+         FROM t_order o JOIN t_order_item ot ON o.id=ot.orderId JOIN t_delivery d ON o.contact=d.id  WHERE o.id=#{orderId}
+    </select>
+    <resultMap id="order" type="com.yg.pojo.Order" autoMapping="true">
+        <id property="id" column="id"/>
+        <!--<result property="userId" column="o.userId"/>-->
+        <!--<result property="ctime" column="o.ctime"/>-->
+        <association property="delivery" javaType="com.yg.pojo.Delivery" autoMapping="true">
+            <id property="id" column="dId"/>
+            <result property="name" column="dName"/>
+            <result property="phone" column="dPhone"/>
+            <result property="province" column="dProvince"/>
+            <result property="city" column="dCity"/>
+            <result property="area" column="dArea"/>
+            <result property="exact" column="dExact"/>
+            <result property="zip" column="dZip"/>
+        </association>
+        <collection property="orderItems" ofType="com.yg.pojo.OrderItem" autoMapping="true">
+            <id property="id" column="otId"/>
+            <result property="ctime" column="otCtime"/>
+            <result property="price" column="otPrice"/>
+            <result property="priceY" column="otPriceY"/>
+            <result property="count" column="otCount"/>
+            <!--<result property="prodName" column="pName"/>-->
+        </collection>
+    </resultMap>
+    <select id="columnInfo" parameterType="string" resultType="java.util.HashMap">
+        select column_name ,data_type,column_type,column_comment,column_default,is_nullable,CHARACTER_MAXIMUM_LENGTH
+        maxLength,ORDINAL_POSITION position FROM INFORMATION_SCHEMA.COLUMNS
+        <trim prefix="WHERE" prefixOverrides="or | and">
+            table_schema='yg'
+            and TABLE_NAME ='t_order'
+            and COLUMN_NAME =#{columnName}
+        </trim>
+    </select>
+</mapper>

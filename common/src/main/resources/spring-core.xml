@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd" default-autowire="byName">
+    <import resource="base.xml"/>
+    <!-- 打开Spring的Annotation支持 -->
+	<context:annotation-config />
+	<context:component-scan base-package="com.yg.util,com.yg.base,com.yg.aspect,com.yg.service.**,com.yg.task"/>
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <tx:advice id="methodAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="save*" propagation="REQUIRED" rollback-for="Exception" />
+            <tx:method name="add*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="create*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="insert*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="merge*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="del*" propagation="REQUIRED" />
+            <tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="remove*" propagation="REQUIRED" />
+            <tx:method name="put*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="get*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="count*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="find*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="query*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="list*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="*" propagation="SUPPORTS" read-only="true" />
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <aop:pointcut id="interceptorPointCuts" expression="execution(* com.yg.dao..*.*(..))" />
+        <!--<aop:pointcut id="cache" expression="@annotation(org.springframework.cache.annotation.Cacheable)" />-->
+        <aop:advisor advice-ref="methodAdvice" pointcut-ref="interceptorPointCuts" />
+        <!--<aop:advisor advice-ref="cacheAdvice" pointcut="execution(*  com.ygo.impl..*(..))" />-->
+    </aop:config>
+
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <!--<cache:annotation-driven cache-manager="cacheManager" mode="aspectj" proxy-target-class="true"/>-->
+    <!-- 线程执行器配置，用于任务注册 -->
+<!--    <bean id="executor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="10" />
+        <property name="maxPoolSize" value="100" />
+        <property name="queueCapacity" value="500" />
+    </bean>
+    &lt;!&ndash; 设置调度 &ndash;&gt;
+    <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="taskExecutor" ref="executor" />
+    </bean>-->
+    <bean id="hbaseRepository" class="com.yanguan.server.HbaseRepository" init-method="initialize" destroy-method="desctroy">
+        <property name="quorum" value="121.201.33.107" />
+        <property name="clientPort" value="2181" />
+        <property name="dfsHost" value="121.201.35.184" />
+        <property name="dfsPort" value="9000" />
+        <property name="homeDir" value="/usr/local/src/hadoop/hadoop-2.7.1" />
+    </bean>
+</beans>

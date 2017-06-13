@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CouponDict">
+    <sql id="coupon_dict_K">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="couponName != null">couponName,</if>
+            <if test="couponAmount != null">couponAmount,</if>
+            <if test="createTime != null">createTime,</if>
+            <if test="couponRemarks != null">couponRemarks,</if>
+            <if test="couponStatus != null">couponStatus,</if>
+            <if test="isWithdraw != null">isWithdraw,</if>
+            <if test="couponType != null">couponType,</if>
+            <if test="expirationDate != null">expirationDate,</if>
+        </trim>
+    </sql>
+    <sql id="coupon_dict_V">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="couponName != null">#{couponName},</if>
+            <if test="couponAmount != null">#{couponAmount},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="couponRemarks != null">#{couponRemarks},</if>
+            <if test="couponStatus != null">#{couponStatus},</if>
+            <if test="isWithdraw != null">#{isWithdraw},</if>
+            <if test="couponType != null">#{couponType},</if>
+            <if test="expirationDate != null">#{expirationDate},</if>
+        </trim>
+    </sql>
+    <sql id="coupon_dict_U">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="couponName != null">couponName=#{couponName},</if>
+            <if test="couponAmount != null">couponAmount=#{couponAmount},</if>
+            <if test="createTime != null">createTime=#{createTime},</if>
+            <if test="couponRemarks != null">couponRemarks=#{couponRemarks},</if>
+            <if test="couponStatus != null">couponStatus=#{couponStatus},</if>
+            <if test="isWithdraw != null">isWithdraw=#{isWithdraw},</if>
+            <if test="couponType != null">couponType=#{couponType},</if>
+            <if test="expirationDate != null">expirationDate=#{expirationDate},</if>
+        </trim>
+    </sql>
+    <sql id="coupon_dict_C">
+        <trim prefix="WHERE" prefixOverrides="or | and">
+            <if test="id != null">and id=#{id}</if>
+            <if test="couponName != null">and couponName=#{couponName}</if>
+            <if test="couponAmount != null">and couponAmount=#{couponAmount}</if>
+            <if test="createTime != null">and createTime=#{createTime}</if>
+            <if test="couponRemarks != null">and couponRemarks=#{couponRemarks}</if>
+            <if test="couponStatus != null">and couponStatus=#{couponStatus}</if>
+            <if test="isWithdraw != null">and isWithdraw=#{isWithdraw},</if>
+            <if test="couponType != null">and couponType=#{couponType}</if>
+            <if test="expirationDate != null">and expirationDate=#{expirationDate}</if>
+        </trim>
+    </sql>
+
+    <insert id="save" parameterType="com.yg.pojo.CouponDict" keyProperty="id"
+            useGeneratedKeys="true">insert into
+        t_coupon_dict (
+        <include refid="coupon_dict_K"/>
+        ) values(
+        <include refid="coupon_dict_V"/>
+        )
+    </insert>
+
+    <select id="queryById" parameterType="long" resultType="com.yg.pojo.CouponDict">
+        select * from t_coupon_dict where id=#{id}
+    </select>
+
+    <select id="queryAll" resultType="com.yg.pojo.CouponDict">
+        select * from t_coupon_dict
+    </select>
+
+    <select id="queryByPO" parameterType="com.yg.pojo.CouponDict" resultType="com.yg.pojo.CouponDict">
+        select * from t_coupon_dict
+        <include refid="coupon_dict_C"></include>
+    </select>
+    <select id="queryByPros" parameterType="map" resultType="com.yg.pojo.CouponDict">
+        select * FROM t_coupon_dict
+        <trim prefix="where" prefixOverrides="or | and" suffixOverrides="where">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">${key}=#{item}</if>
+            </foreach>
+        </trim>
+    </select>
+    <select id="queryForPage" parameterType="com.yg.core.Page" resultType="com.yg.pojo.CouponDict">
+        select * from t_coupon_dict
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">
+                    <choose>
+                        <when test='key !="id"'>
+                            ${key} LIKE '%${item}%'
+                        </when>
+                        <otherwise>
+                            ${key}='${item}'
+                        </otherwise>
+                    </choose>
+                </if>
+            </foreach>
+        </trim>
+        <trim prefix="order by" prefixOverrides=",">
+            <foreach collection="orderMap" item="item" index="key" separator=",">
+                <if test="null != item">${key} ${item}</if>
+            </foreach>
+        </trim>
+    </select>
+
+    <update id="updateById" parameterType="com.yg.pojo.CouponDict">
+        update t_coupon_dict
+        <include refid="coupon_dict_U"></include>
+        where id=#{id}
+    </update>
+    <delete id="deleteById" parameterType="long">
+        delete from t_coupon_dict where id=#{id}
+    </delete>
+    <delete id="deleteByPO" parameterType="com.yg.pojo.CouponDict">
+        delete from t_coupon_dict
+        <include refid="coupon_dict_C"></include>
+    </delete>
+
+    <select id="queryUserCoupons" parameterType="long" resultType="com.yg.pojo.CouponDict">
+        select tc.* FROM t_coupon_dict tc JOIN t_coupon c ON c.couponId=tc.id where c.userId=#{userId}
+    </select>
+    <select id="queryCoupon" parameterType="string" resultType="com.yg.pojo.CouponDict">
+        select tc.* from t_coupon_dict tc JOIN t_coupon c ON c.couponId=tc.id where c.id LIKE concat(UPPER(#{couponId}),'%')
+    </select>
+</mapper>
