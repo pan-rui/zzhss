@@ -53,7 +53,7 @@ public class SystemAction extends BaseAction {
     }
 
     @RequestMapping(value = "list/{tableName}", method = RequestMethod.GET)
-    public String datagrid(HttpServletRequest request, @ModelAttribute @PathVariable String tableName,String key,String val, @MapBind Page page, ModelMap modelMap) {
+    public String datagrid(HttpServletRequest request,@PathVariable String tableName,String key,String val, @MapBind Page page, ModelMap modelMap) {
         BaseDao dao = (BaseDao) Constants.applicationContext.getBean(baseService.getPoName(tableName) + "Dao");
         if(!StringUtils.isEmpty(key)&&!StringUtils.isEmpty(val)){
             Map<String, Object> params = page.getParams();
@@ -71,6 +71,7 @@ public class SystemAction extends BaseAction {
         List results = dao.queryForPage(page);
         page.setResults(results);
         modelMap.put("page", page);
+        modelMap.put("tableName", tableName);
         modelMap.put("columnsInfo", dao.queryColumnInfo(ParamsMap.newMap("tableName", tableName)));
         List<Menu> menus=menuDao.queryByPros(ParamsMap.newMap("url", request.getRequestURI()));
         modelMap.put("menuInfo", menus.isEmpty()?null:menus.get(0));
@@ -93,7 +94,7 @@ public class SystemAction extends BaseAction {
 
     @RequestMapping(value = "save/{tableName}",method = RequestMethod.POST)
     @ResponseBody
-    public Object dataSave(HttpServletRequest request,@ModelAttribute@PathVariable String tableName, String operate, @BeanBind("bean") Object bean) {
+    public Object dataSave(HttpServletRequest request,@PathVariable String tableName, String operate, @BeanBind("bean") Object bean) {
         BaseResult valid = validAndReturn(bean);
         if (valid.getCode() != 0) return valid;
         BaseDao dao = (BaseDao) Constants.applicationContext.getBean(baseService.getPoName(tableName) + "Dao");
@@ -101,6 +102,7 @@ public class SystemAction extends BaseAction {
         if (operate.equals("add"))
             i = dao.saveOnCache(bean)!=null?1:0;
         else i = dao.updateByIdForCache(bean);
+        request.setAttribute("tableName", tableName);
         return i > 0 ? ReturnCode.OK.toString() : ReturnCode.FAIL.toString();
     }
 
@@ -116,37 +118,42 @@ public class SystemAction extends BaseAction {
     }
 
     @RequestMapping(value = "addOpt/{tableName}",method = RequestMethod.GET)
-    public String addOperate(HttpServletRequest request, @ModelAttribute @PathVariable String tableName, ModelMap modelMap) {
+    public String addOperate(HttpServletRequest request, @PathVariable String tableName, ModelMap modelMap) {
         BaseDao dao = (BaseDao) Constants.applicationContext.getBean(baseService.getPoName(tableName) + "Dao");
         modelMap.put("bean", menuDao.queryByPros(ParamsMap.newMap("url", "/system/list/"+tableName)).get(0));
+        modelMap.put("tableName", tableName);
         return "setControler";
     }
     @RequestMapping(value = "addOpt/{tableName}",method = RequestMethod.POST)
     @ResponseBody
-    public String addOperateEd(HttpServletRequest request, @ModelAttribute @PathVariable String tableName,@BeanBind("menu") Menu menu, ModelMap modelMap) {
+    public String addOperateEd(HttpServletRequest request, @PathVariable String tableName,@BeanBind("menu") Menu menu, ModelMap modelMap) {
+        modelMap.put("tableName", tableName);
         return menuDao.updateByIdForCache(menu) > 0 ? ReturnCode.OK.toString() : ReturnCode.FAIL.toString();
     }
     @RequestMapping(value = "setColumn/{tableName}",method = RequestMethod.GET)
-    public String setColumn(HttpServletRequest request, @ModelAttribute @PathVariable String tableName, ModelMap modelMap) {
+    public String setColumn(HttpServletRequest request, @PathVariable String tableName, ModelMap modelMap) {
 //        BaseDao dao = (BaseDao) Constants.applicationContext.getBean(baseService.getPoName(tableName) + "Dao");
         modelMap.put("columnsInfo", adminDao.queryColumnInfo(ParamsMap.newMap("tableName", tableName)));
         modelMap.put("bean",menuDao.queryByPros(ParamsMap.newMap("url", "/system/list/" + tableName)).get(0));
+        modelMap.put("tableName", tableName);
         return "setColumn";
     }
 
     @RequestMapping(value = "setColumn/{tableName}",method = RequestMethod.POST)
     @ResponseBody
-    public String setColumnEd(HttpServletRequest request, @ModelAttribute @PathVariable String tableName, @BeanBind("menu") Menu menu, ModelMap modelMap) {
+    public String setColumnEd(HttpServletRequest request, @PathVariable String tableName, @BeanBind("menu") Menu menu, ModelMap modelMap) {
         return menuDao.updateByIdForCache(menu) > 0 ? ReturnCode.OK.toString() : ReturnCode.FAIL.toString();
     }
 
     @RequestMapping(value = "{tableName}/{operate}", params = "id")
-    public String dataInfo(HttpServletRequest request, @ModelAttribute @PathVariable String tableName, @ModelAttribute @PathVariable String operate, String id, ModelMap modelMap) {
+    public String dataInfo(HttpServletRequest request, @PathVariable String tableName, @PathVariable String operate, String id, ModelMap modelMap) {
         String beanName = baseService.getPoName(tableName);
         BaseDao dao = (BaseDao) Constants.applicationContext.getBean(beanName + "Dao");
         modelMap.put("columnsInfo", dao.queryColumnInfo(ParamsMap.newMap("tableName", tableName)));
         if (!operate.equals("add"))
             modelMap.put("bean", dao.queryById(Long.parseLong(id)));
+        modelMap.put("tableName", tableName);
+        modelMap.put("operate", operate);
         return "dataInfo";
     }
 
